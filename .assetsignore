@@ -1,0 +1,9 @@
+.git
+.github
+node_modules
+tools
+wrangler.jsonc
+.assetsignore
+img
+assets/videos/reel-original.mp4
+assets/videos/reel-sin-audio.mp4
