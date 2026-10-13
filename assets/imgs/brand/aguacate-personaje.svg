@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 500" fill="none" role="img" aria-labelledby="title">
+  <title id="title">Aguacate Hass</title>
+  <path d="M208 68c-14-24-13-45-1-62 31 9 48 32 42 57-3 13-17 18-41 5Z" fill="#D7AD43"/>
+  <path d="M207 62c12-19 27-29 47-31" stroke="#011D07" stroke-width="5" stroke-linecap="round"/>
+  <path d="M210 69C121 77 50 157 37 267c-12 100 45 188 136 206 86 17 171-36 202-122 31-84 8-181-55-237-30-27-68-43-110-45Z" fill="#285B2C" stroke="#D7AD43" stroke-width="7"/>
+  <path d="M210 93c-73 8-132 75-145 173-12 84 35 158 112 175 69 15 136-29 162-102 26-71 7-152-45-199-23-22-52-36-84-42Z" fill="#8BAE54"/>
+  <path d="M209 114c-58 7-105 62-116 145-10 69 28 129 91 144 55 13 110-24 131-83 21-58 5-125-36-164-19-18-43-31-70-37Z" fill="#E7D991"/>
+  <ellipse cx="211" cy="280" rx="63" ry="78" transform="rotate(12 211 280)" fill="#81502A"/>
+  <ellipse cx="191" cy="254" rx="17" ry="23" transform="rotate(12 191 254)" fill="#A86A35" opacity=".75"/>
+  <path d="M102 195c16-31 40-54 70-66" stroke="#F4EEDB" stroke-width="8" stroke-linecap="round" opacity=".54"/>
+  <path d="M55 328c9 28 27 52 52 68" stroke="#D7AD43" stroke-width="6" stroke-linecap="round" opacity=".75"/>
+</svg>

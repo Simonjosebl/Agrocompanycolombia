@@ -1,0 +1,360 @@
+{
+ "hortalizas": [
+  {
+   "name": "Acelga",
+   "img": "acelga.webp"
+  },
+  {
+   "name": "Ahuyama",
+   "img": "ahuyama.webp"
+  },
+  {
+   "name": "Ajo",
+   "img": "ajo.webp"
+  },
+  {
+   "name": "Alcachofa",
+   "img": "alcachofa.webp"
+  },
+  {
+   "name": "Apio",
+   "img": "apio.webp"
+  },
+  {
+   "name": "Arveja verde sabanera",
+   "img": "arveja-verde-sabanera.webp"
+  },
+  {
+   "name": "Berenjena",
+   "img": "berenjena.webp"
+  },
+  {
+   "name": "Brócoli",
+   "img": "brocoli.webp"
+  },
+  {
+   "name": "Calabacín",
+   "img": "calabacin.webp"
+  },
+  {
+   "name": "Calabaza",
+   "img": "calabaza.webp"
+  },
+  {
+   "name": "Cebolla cabezona blanca",
+   "img": "cebolla-cabezona-blanca.webp"
+  },
+  {
+   "name": "Cebolla cabezona roja",
+   "img": "cebolla-cabezona-roja.webp"
+  },
+  {
+   "name": "Cebolla roja",
+   "img": "cebolla-roja.webp"
+  },
+  {
+   "name": "Cilantro",
+   "img": "cilantro.webp"
+  },
+  {
+   "name": "Coliflor",
+   "img": "coliflor.webp"
+  },
+  {
+   "name": "Espinaca",
+   "img": "espinaca.webp"
+  },
+  {
+   "name": "Frijol verde",
+   "img": "frijol-verde.webp"
+  },
+  {
+   "name": "Haba verde sabanera",
+   "img": "haba-verde-sabanera.webp"
+  },
+  {
+   "name": "Habichuela",
+   "img": "habichuela.webp"
+  },
+  {
+   "name": "Lechuga",
+   "img": "lechuga.webp"
+  },
+  {
+   "name": "Mazorca",
+   "img": "mazorca.webp"
+  },
+  {
+   "name": "Pepino cohombro",
+   "img": "pepino-cohombro.webp"
+  },
+  {
+   "name": "Pepino común",
+   "img": "pepino-comun.webp"
+  },
+  {
+   "name": "Pimentón",
+   "img": "pimenton.webp"
+  },
+  {
+   "name": "Rábano rojo",
+   "img": "rabano-rojo.webp"
+  },
+  {
+   "name": "Remolacha",
+   "img": "remolacha.webp"
+  },
+  {
+   "name": "Repollo",
+   "img": "repollo.webp"
+  },
+  {
+   "name": "Tomate chonto",
+   "img": "tomate-chonto.webp"
+  },
+  {
+   "name": "Tomate larga vida",
+   "img": "tomate-larga-vida.webp"
+  },
+  {
+   "name": "Tomate Milano",
+   "img": "tomate-milano.webp"
+  },
+  {
+   "name": "Zanahoria",
+   "img": "zanahoria.webp"
+  }
+ ],
+ "frutas": [
+  {
+   "name": "Aguacate Hass",
+   "img": "aguacate-hass.webp"
+  },
+  {
+   "name": "Banano",
+   "img": "banano.webp"
+  },
+  {
+   "name": "Banano bocadillo",
+   "img": "banano-bocadillo.webp"
+  },
+  {
+   "name": "Borojó",
+   "img": "borojo.webp"
+  },
+  {
+   "name": "Carambolo",
+   "img": "carambolo.webp"
+  },
+  {
+   "name": "Coco",
+   "img": "coco.webp"
+  },
+  {
+   "name": "Curuba",
+   "img": "curuba.webp"
+  },
+  {
+   "name": "Granadilla",
+   "img": "granadilla.webp"
+  },
+  {
+   "name": "Guayaba",
+   "img": "guayaba.webp"
+  },
+  {
+   "name": "Guanábana",
+   "img": "guanabana.webp"
+  },
+  {
+   "name": "Lima Tahití",
+   "img": "lima-tahiti.webp"
+  },
+  {
+   "name": "Limón común",
+   "img": "limon-comun.webp"
+  },
+  {
+   "name": "Lulo",
+   "img": "lulo.webp"
+  },
+  {
+   "name": "Mandarina",
+   "img": "mandarina.webp"
+  },
+  {
+   "name": "Mango Tommy",
+   "img": "mango-tommy.webp"
+  },
+  {
+   "name": "Mango Yulima",
+   "img": "mango-yulima.webp"
+  },
+  {
+   "name": "Maracuyá",
+   "img": "maracuya.webp"
+  },
+  {
+   "name": "Mora",
+   "img": "mora.webp"
+  },
+  {
+   "name": "Naranja",
+   "img": "naranja.webp"
+  },
+  {
+   "name": "Papaya",
+   "img": "papaya.webp"
+  },
+  {
+   "name": "Piña",
+   "img": "pina.webp"
+  },
+  {
+   "name": "Pitahaya",
+   "img": "pitahaya.webp"
+  },
+  {
+   "name": "Sandía",
+   "img": "sandia.webp"
+  },
+  {
+   "name": "Manzana verde",
+   "img": "manzana-verde.webp"
+  },
+  {
+   "name": "Manzana roja",
+   "img": "manzana-roja.webp"
+  },
+  {
+   "name": "Melón",
+   "img": "melon.webp"
+  },
+  {
+   "name": "Uchuva",
+   "img": "uchuva.webp"
+  },
+  {
+   "name": "Durazno",
+   "img": "durazno.webp"
+  },
+  {
+   "name": "Ciruela",
+   "img": "ciruela.webp"
+  },
+  {
+   "name": "Fresa",
+   "img": "fresa.webp"
+  },
+  {
+   "name": "Arándano",
+   "img": "arandano.webp"
+  },
+  {
+   "name": "Frambuesa",
+   "img": "frambuesa.webp"
+  },
+  {
+   "name": "Mora azul",
+   "img": "mora-azul.webp"
+  },
+  {
+   "name": "Kiwi",
+   "img": "kiwi.webp"
+  },
+  {
+   "name": "Tamarindo",
+   "img": "tamarindo.webp"
+  },
+  {
+   "name": "Pera",
+   "img": "pera.webp"
+  },
+  {
+   "name": "Níspero",
+   "img": "nispero.webp"
+  },
+  {
+   "name": "Nectarina",
+   "img": "nectarina.webp"
+  },
+  {
+   "name": "Cereza",
+   "img": "cereza.webp"
+  },
+  {
+   "name": "Uva verde",
+   "img": "uva-verde.webp"
+  },
+  {
+   "name": "Uva roja",
+   "img": "uva-roja.webp"
+  },
+  {
+   "name": "Aguacate papelillo",
+   "img": "aguacate-papelillo.webp"
+  },
+  {
+   "name": "Aguacate lorena",
+   "img": "aguacate-lorena.webp"
+  }
+ ],
+ "tuberculos": [
+  {
+   "name": "Papa criolla",
+   "img": "papa-criolla.webp"
+  },
+  {
+   "name": "Papa pastusa",
+   "img": "papa-pastusa.webp"
+  },
+  {
+   "name": "Papa sabanera",
+   "img": "papa-sabanera.webp"
+  },
+  {
+   "name": "Yuca",
+   "img": "yuca.webp"
+  },
+  {
+   "name": "Ñame",
+   "img": "name.webp"
+  },
+  {
+   "name": "Arracacha",
+   "img": "arracacha.webp"
+  },
+  {
+   "name": "Oca",
+   "img": "oca.webp"
+  },
+  {
+   "name": "Ibias",
+   "img": "ibias.webp"
+  },
+  {
+   "name": "Cebolla larga",
+   "img": "cebolla-larga.webp"
+  },
+  {
+   "name": "Plátano hartón",
+   "img": "platano-harton.webp"
+  },
+  {
+   "name": "Plátano dominico",
+   "img": "platano-dominico.webp"
+  },
+  {
+   "name": "Plátano guineo",
+   "img": "platano-guineo.webp"
+  },
+  {
+   "name": "Plátano manzano",
+   "img": "platano-manzano.webp"
+  },
+  {
+   "name": "Plátano cachaco",
+   "img": "platano-cachaco.webp"
+  }
+ ]
+}
