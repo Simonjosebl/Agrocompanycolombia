@@ -739,7 +739,7 @@ def build_index():
 {closing(T("Cultivemos", "Let’s cultivate"), T("oportunidades juntos.", "opportunities together."), T("Conectemos el campo colombiano con nuevos mercados. Cuéntanos tu destino, volumen y calibres y te preparamos una propuesta.", "Let’s connect Colombian farms with new markets. Tell us your destination, volume and sizes and we will prepare a proposal."), cta=T("Cotiza tu exportación", "Request an export quote"), perks=[('check-circle', T('Calidad', 'Quality')), ('handshake', T('Confianza', 'Trust')), ('users-three', T('Alianzas', 'Partnerships')), ('plant', T('Crecimiento', 'Growth'))])}  </main>
 """
     body = body.replace('href="contacto.html"', 'href="contacto.html?tipo=exportacion"')
-    return (head('Agro Colombia Company | Exportadores de aguacate Hass colombiano', 'Agro Colombia Company | Colombian Hass avocado exporter',
+    return (head('Agro Colombia Company | Aguacate Hass y productos agrícolas frescos', 'Agro Colombia Company | Hass avocados and fresh produce',
                  'Aguacate Hass fresco de Sonsón, Antioquia, para mercados internacionales. Certificaciones Rainforest Alliance, GLOBALG.A.P. y registro ICA. Capacidad de 50 toneladas.',
                  'Fresh Hass avocados from Sonsón, Antioquia, for international markets. Rainforest Alliance and GLOBALG.A.P. certified, ICA registered. 50 ton supply capacity.',
                  'index.html', 'assets/imgs/exportacion/mitad-hass.webp', extra=extra) + header('index.html') + body + footer())
