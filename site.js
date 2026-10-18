@@ -287,7 +287,7 @@
 
   // Contadores animados
   function formatCount(element, value) {
-    element.textContent = (element.dataset.prefix || '') + value;
+    element.textContent = (element.dataset.prefix || '') + value + (element.dataset.suffix || '');
   }
   var counters = document.querySelectorAll('[data-count]');
   if (!reducedMotion && 'IntersectionObserver' in window) {
@@ -474,6 +474,9 @@
   // Formulario: validación en línea y envío por correo
   var form = document.querySelector('[data-contact-form]');
   if (form) {
+    var requested = new URLSearchParams(window.location.search).get('tipo');
+    var typeField = form.querySelector('[name="type"]');
+    if (typeField && (requested === 'nacional' || requested === 'exportacion')) typeField.value = requested;
     var status = form.querySelector('.form-status');
     var validateField = function (field) {
       var error = document.getElementById(field.getAttribute('aria-describedby'));
@@ -490,7 +493,7 @@
     });
     form.addEventListener('submit', function (event) {
       event.preventDefault();
-      var fields = Array.prototype.slice.call(form.querySelectorAll('input, textarea'));
+      var fields = Array.prototype.slice.call(form.querySelectorAll('input, textarea, select'));
       var invalid = fields.filter(function (field) { return !validateField(field); });
       status.classList.toggle('is-error', invalid.length > 0);
       if (invalid.length) {
@@ -499,12 +502,14 @@
         return;
       }
       var data = new FormData(form);
+      var typeSelect = form.querySelector('[name="type"]');
       var lines = [
+        (root.lang === 'en' ? 'Request: ' : 'Solicitud: ') + (typeSelect ? typeSelect.options[typeSelect.selectedIndex].text : ''),
         'Nombre / Name: ' + data.get('name'),
         'Empresa / Company: ' + (data.get('company') || ''),
         'Correo / Email: ' + data.get('email'),
         'Teléfono / Phone: ' + (data.get('phone') || ''),
-        'Ciudad / City: ' + data.get('city'),
+        'Destino / Destination: ' + data.get('city'),
         'Productos / Products: ' + (data.get('interest') || ''),
         '',
         data.get('message')

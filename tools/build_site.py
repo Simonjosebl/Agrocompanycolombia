@@ -14,6 +14,8 @@ EMAIL = 'agrocolombiacompany@gmail.com'
 IG = 'https://www.instagram.com/agrocolombiacompany/'
 FB = 'https://www.facebook.com/share/1GnSrKpnuH/'
 WA = '573116845523'
+LEGAL_NAME = 'Agro Colombia Company S.A.S.'
+NIT = '901.910.572-4'
 WA_DISPLAY = '+57 311 684 5523'
 
 DICT = {}
@@ -131,18 +133,45 @@ def lightbox():
   </dialog>
 '''
 
+# ---------------------------------------------------------------- certificaciones
+def _logo(name):
+    for ext in ('svg', 'png', 'webp'):
+        if (ROOT / f'assets/imgs/certificaciones/{name}.{ext}').exists():
+            return f'assets/imgs/certificaciones/{name}.{ext}'
+    raise SystemExit(f'Falta el logo de {name}')
+
+CERTS = [
+ ('rainforest-alliance', 'Rainforest Alliance', 'https://www.rainforest-alliance.org/',
+  T('Agricultura sostenible: conservación de los ecosistemas, bienestar de los trabajadores y de las comunidades rurales.', 'Sustainable agriculture: protecting ecosystems and the wellbeing of farm workers and rural communities.')),
+ ('globalgap', 'GLOBALG.A.P.', 'https://www.globalgap.org/',
+  T('Estándar internacional de buenas prácticas agrícolas: inocuidad alimentaria, trazabilidad y sostenibilidad del cultivo.', 'International good agricultural practice standard: food safety, traceability and sustainable farming.')),
+ ('ica', 'ICA', 'https://www.ica.gov.co/',
+  T('Registro ante el Instituto Colombiano Agropecuario, la autoridad sanitaria y fitosanitaria para exportar desde Colombia.', 'Registered with the Colombian Agricultural Institute, the plant health authority for exports from Colombia.')),
+]
+ICA_SUB = '<small>' + T('Instituto Colombiano Agropecuario', 'Colombian Agricultural Institute') + '</small>'
+
+def cert_cards():
+    return '<div class="cert-grid">' + ''.join(
+        f'<a class="cert-card reveal" style="--d:{i}" href="{url}" target="_blank" rel="noopener" aria-label="{name}: {T("sitio oficial", "official website")}">'
+        f'<span class="cert-logo"><img src="{_logo(key)}" alt="{name}" loading="lazy" /></span>'
+        f'<span class="cert-body"><b>{name}</b>{ICA_SUB if key == "ica" else ""}<p>{text}</p>'
+        f'<span class="cert-link">{T("Sitio oficial", "Official website")} {icon("arrow-up-right")}</span></span></a>'
+        for i, (key, name, url, text) in enumerate(CERTS)) + '</div>'
+
+def cert_strip():
+    return ''.join(f'<a href="{url}" target="_blank" rel="noopener" title="{name}"><img src="{_logo(key)}" alt="{name}" loading="lazy" /></a>' for key, name, url, _ in CERTS)
+
 # ---------------------------------------------------------------- partes comunes
 NAV = [('index.html', T('Inicio', 'Home')), ('nosotros.html', T('Nosotros', 'About us')),
-       ('servicios.html', T('Productos', 'Products')), ('contacto.html', T('Contacto', 'Contact'))]
+       ('servicios.html', T('Distribución', 'Distribution')), ('contacto.html', T('Contacto', 'Contact'))]
 
 MARQUEE = [
- T('Aguacate Hass de Sonsón, Antioquia', 'Hass avocados from Sonsón, Antioquia'),
- T('Más de 200 clientes en Colombia', 'More than 200 clients across Colombia'),
- T('Transporte propio y envío gratis en Bogotá', 'Own fleet and free delivery in Bogotá'),
- T('Pago contra entrega', 'Cash on delivery'),
- T(f'{TOTAL} referencias del campo colombiano', f'{TOTAL} products from Colombian farms'),
- T('Precios mayoristas', 'Wholesale prices'),
- T('Operación comercial en Corabastos, Bogotá', 'Commercial operation at Corabastos, Bogotá'),
+ T('Aguacate Hass colombiano de exportación', 'Colombian Hass avocados for export'),
+ T('Origen: Sonsón, Antioquia', 'Origin: Sonsón, Antioquia'),
+ T('Certificados Rainforest Alliance, GLOBALG.A.P. e ICA', 'Rainforest Alliance, GLOBALG.A.P. and ICA certified'),
+ T('Capacidad de suministro de 50 toneladas', '50 ton supply capacity'),
+ T('Calibres del 12 al 32', 'Sizes 12 to 32'),
+ T('Distribución nacional desde Corabastos, Bogotá', 'National distribution from Corabastos, Bogotá'),
 ]
 
 def head(title_es, title_en, desc_es, desc_en, path, image='assets/imgs/origen/cultivo-hass-montana.jpg', extra=''):
@@ -263,7 +292,8 @@ def footer():
         <div class="social-row">{social_links()}</div>
       </div>
       <div class="footer-col"><h3>{T("Navegación", "Navigation")}</h3><ul>{nav}</ul></div>
-      <div class="footer-col"><h3>{T("Portafolio", "Portfolio")}</h3><ul>{cats}<li><a href="assets/docs/catalogo-nacional-agro-colombia.pdf" target="_blank" rel="noopener">{T("Catálogo PDF", "PDF catalog")} {ARROW}</a></li></ul></div>
+      <div class="footer-col"><h3>{T("Exportación", "Export")}</h3><ul><li><a href="index.html#ficha">{T("Ficha técnica", "Technical sheet")}</a></li><li><a href="index.html#proceso">{T("Proceso de exportación", "Export process")}</a></li><li><a href="index.html#certificaciones">{T("Certificaciones", "Certifications")}</a></li></ul>
+        <h3 class="footer-sub">{T("Distribución nacional", "National distribution")}</h3><ul>{cats}<li><a href="assets/docs/catalogo-nacional-agro-colombia.pdf" target="_blank" rel="noopener">{T("Catálogo PDF", "PDF catalog")} {ARROW}</a></li></ul></div>
       <div class="footer-col"><h3>{T("Contacto", "Contact")}</h3><ul>
         <li><a href="https://wa.me/{WA}" data-whatsapp-link target="_blank" rel="noopener">{icon("whatsapp-logo")}{WA_DISPLAY}</a></li>
         <li><a href="mailto:{EMAIL}">{icon("envelope-simple")}{EMAIL}</a></li>
@@ -273,8 +303,9 @@ def footer():
         <li><span>{icon("plant")}{T("Sonsón, Antioquia", "Sonsón, Antioquia")}</span></li>
       </ul></div>
     </div>
+    <div class="footer-certs"><span>{T("Certificaciones", "Certifications")}</span><div>{cert_strip()}</div></div>
     <div class="footer-bottom">
-      <span>© <span data-year>2026</span> Agro Colombia Company</span>
+      <span>© <span data-year>2026</span> {LEGAL_NAME} · NIT {NIT} · {T("Bogotá D. C., Colombia", "Bogotá D. C., Colombia")}</span>
       <nav class="footer-legal" aria-label="{T("Enlaces legales", "Legal links")}"><a href="privacidad.html">{T("Política de privacidad", "Privacy policy")}</a><a href="privacidad.html#terminos">{T("Términos de uso", "Terms of use")}</a></nav>
       <span>{T("Hecho en Colombia", "Made in Colombia")}</span>
     </div>
@@ -302,19 +333,18 @@ def bg_video(name, label=''):
     return (f'<video data-bg-video muted loop playsinline preload="none" poster="assets/videos/fondos/{name}.jpg" aria-hidden="true">'
             f'<source src="assets/videos/fondos/{name}.mp4" type="video/mp4" /></video>')
 
-def closing(title_a, title_b, text, video='cosecha'):
+EXPORT_PERKS = [('medal', T('Certificaciones internacionales', 'International certifications')), ('package', T('Calibres del 12 al 32', 'Sizes 12 to 32')), ('headset', T('Atención comercial personalizada', 'Personal sales support'))]
+NATIONAL_PERKS = [('hand-coins', T('Pago contra entrega', 'Cash on delivery')), ('truck', T('Envío gratis en Bogotá', 'Free delivery in Bogotá')), ('coins', T('Precios mayoristas', 'Wholesale prices'))]
+
+def closing(title_a, title_b, text, video='cosecha', perks=None, cta=None):
     return f'''    <section class="closing on-dark">
       {bg_video(video)}
       <div class="closing-copy">
         <p class="eyebrow reveal">{T("Cultivemos juntos", "Let’s grow together")}</p>
         <h2 class="h-display reveal" style="--d:1">{title_a} <em>{title_b}</em></h2>
         <p class="reveal" style="--d:2">{text}</p>
-        <a class="button button-gold reveal" style="--d:3" href="contacto.html">{T("Solicita tu cotización", "Request a quote")} {ARROW}</a>
-        <ul class="closing-perks reveal" style="--d:4">
-          <li>{icon("hand-coins")}{T("Pago contra entrega", "Cash on delivery")}</li>
-          <li>{icon("truck")}{T("Envío gratis en Bogotá", "Free delivery in Bogotá")}</li>
-          <li>{icon("coins")}{T("Precios mayoristas", "Wholesale prices")}</li>
-        </ul>
+        <a class="button button-gold reveal" style="--d:3" href="contacto.html">{cta or T("Solicita tu cotización", "Request a quote")} {ARROW}</a>
+        <ul class="closing-perks reveal" style="--d:4">{''.join(f'<li>{icon(ic)}{label}</li>' for ic, label in (perks or EXPORT_PERKS))}</ul>
       </div>
     </section>
 '''
@@ -473,112 +503,176 @@ def map_svg():
 # ---------------------------------------------------------------- INICIO
 def build_index():
     TEASER = ''.join(f'<a class="teaser-card reveal" style="--d:{i}" href="nosotros.html#cultivo"><img src="assets/imgs/cultivo/{f}-sm.webp" alt="{escape(a)}" loading="lazy" /></a>' for i, (f, a, _) in enumerate([CROP_PHOTOS[i] for i in (2, 0, 3, 1, 5)]))
-    MAP_PATHS, MAP_OPTIONS = map_svg()
-    rows = [CATALOG['frutas'][:22] + CATALOG['tuberculos'][:6], CATALOG['hortalizas'] + CATALOG['frutas'][22:]]
-    marquee_rows = ''.join(
-        f'<div class="product-row{" is-reverse" if r else ""}" style="--dur:{110 + r * 20}s">' + ''.join(tile(i) for i in row) +
-        ''.join(tile(i).replace('<figure class="product-tile">', '<figure class="product-tile" aria-hidden="true">') for i in row) + '</div>'
-        for r, row in enumerate(rows))
-    cat_cards = ''.join(f'''<a class="category-card reveal" style="--d:{n}" href="servicios.html#{k}">
-          <img src="assets/imgs/escenas/{img}" alt="" loading="lazy" />
-          <div class="category-card-body"><span class="category-count" data-count="{COUNTS[k]}">{COUNTS[k]}</span><h3>{name}</h3><p>{desc}</p>
-          <span class="card-link">{T("Ver referencias", "See products")} {icon("arrow-up-right")}</span></div></a>''' for n, (k, name, img, desc) in enumerate(CATS))
-    values = [
-     ('headset', T('Atención personalizada', 'Personal service'), T('Nos adaptamos a las necesidades de cada cliente para ofrecer soluciones a la medida.', 'We adapt to each client’s needs with tailored solutions.')),
-     ('truck', T('Transporte y envío gratis', 'Own fleet, free delivery'), T('Transporte propio y envío gratuito en Bogotá, y según cobertura a nivel nacional.', 'Our own trucks and free delivery in Bogotá, and nationwide depending on coverage.')),
-     ('leaf', T('Productos frescos y de calidad', 'Fresh, quality produce'), T('Seleccionamos directamente desde los cultivos para garantizar frescura y calidad.', 'Selected straight from the farms to guarantee freshness and quality.')),
-     ('coins', T('Precio mayorista', 'Wholesale prices'), T('Precios competitivos que dejan un mayor beneficio para tu negocio.', 'Competitive prices that leave more margin for your business.')),
-     ('hand-coins', T('Pago contra entrega', 'Cash on delivery'), T('Confianza y seguridad en cada compra: pagas cuando recibes.', 'Trust and security in every order: you pay when it arrives.')),
-     ('clock', T('Puntualidad garantizada', 'On time, every time'), T('Cumplimos los tiempos de entrega para que tu operación nunca se detenga.', 'We meet delivery times so your operation never stops.')),
+    X = 'assets/imgs/exportacion'
+    chips = lambda items: ''.join(f'<li>{icon(ic)}{label}</li>' for ic, label in items)
+    origin_chips = chips([('map-pin', T('Sonsón, Antioquia', 'Sonsón, Antioquia')), ('plant', T('Tierras fértiles', 'Fertile land')), ('leaf', T('Tradición agrícola', 'Farming tradition')), ('sun', T('Paisajes que inspiran', 'Inspiring landscapes'))])
+    people_chips = chips([('plant', T('Agricultores locales', 'Local growers')), ('users-three', T('Familias del campo', 'Farming families')), ('medal', T('Conocimiento y experiencia', 'Knowledge and experience')), ('globe-simple', T('Regiones que avanzan', 'Regions moving forward'))])
+    attrs = chips([('sparkle', T('Sabor característico', 'Distinctive flavor')), ('cooking-pot', T('Versatilidad gastronómica', 'Culinary versatility')), ('leaf', T('Textura cremosa', 'Creamy texture')), ('medal', T('Variedad apreciada', 'Prized variety')), ('globe-simple', T('Potencial en mercados internacionales', 'Strong international demand'))])
+    stages = [
+     ('flores', T('Cultivo', 'Growing'), T('Cuidado de los árboles en nuestras tierras de Sonsón, Antioquia, con condiciones ideales para un fruto de alta calidad.', 'Tree care on our land in Sonsón, Antioquia, with ideal conditions for high quality fruit.')),
+     ('recogiendo', T('Cosecha', 'Harvest'), T('Recolección manual en el punto óptimo de maduración.', 'Hand picked at the optimal point of maturity.')),
+     ('hass-caja', T('Recepción', 'Reception'), T('Recepción del fruto en nuestras instalaciones para su revisión inicial de calidad.', 'Fruit is received at our facilities for an initial quality check.')),
+     ('manos-caja', T('Selección', 'Sorting'), T('Clasificación manual de acuerdo con el peso, tamaño, apariencia y calidad del fruto.', 'Hand sorted by weight, size, appearance and quality.')),
+     ('cosecha-caja', T('Empaque', 'Packing'), T('Materiales diseñados para proteger el fruto y mantener su calidad durante el transporte internacional.', 'Packaging designed to protect the fruit and keep its quality during international transport.')),
     ]
-    value_cards = ''.join(f'''<article class="value-card reveal{" is-featured" if i == 1 else ""}" style="--d:{i % 3}"><span class="value-icon">{icon(ic)}</span><span class="value-num">0{i + 1}</span><h3>{t}</h3><p>{d}</p></article>''' for i, (ic, t, d) in enumerate(values))
-    sectors = [('abastos', 'storefront', T('Centrales de abastos', 'Wholesale markets')), ('restaurantes', 'fork-knife', T('Restaurantes', 'Restaurants')),
-               ('hoteles', 'bed', T('Hoteles', 'Hotels')), ('casinos', 'cooking-pot', T('Casinos y comedores', 'Cafeterias')),
-               ('colegios', 'graduation-cap', T('Colegios', 'Schools')), ('hospitales', 'first-aid', T('Hospitales', 'Hospitals')),
-               ('carceles', 'buildings', T('Centros penitenciarios', 'Correctional facilities')), ('ejercito', 'medal', T('Ejército', 'Army')),
-               ('policia', 'shield-star', T('Policía', 'Police')), ('fundaciones', 'hand-heart', T('Fundaciones', 'Foundations'))]
-    sector_cards = ''.join(f'<figure class="sector-card reveal" style="--d:{i % 5}"><img src="assets/imgs/escenas/sector-{k}.webp" alt="" loading="lazy" /><span>{icon(ic)}{label}</span></figure>' for i, (k, ic, label) in enumerate(sectors))
-    steps = [('paso-1', T('Cuéntanos qué necesitas', 'Tell us what you need'), T('Productos, volumen y zona de entrega. Te asesoramos de forma personalizada.', 'Products, volume and delivery area. We advise you one on one.')),
-             ('paso-3', T('Aprueba tu cotización', 'Approve your quote'), T('Te enviamos una propuesta según disponibilidad y confirmamos la fecha de entrega.', 'We send a proposal based on availability and confirm the delivery date.')),
-             ('paso-6', T('Recibe y paga al llegar', 'Receive and pay on arrival'), T('Llevamos tu pedido con transporte propio y pagas contra entrega.', 'We deliver with our own fleet and you pay on delivery.'))]
-    step_cards = ''.join(f'<li class="step-card reveal" style="--d:{i}"><figure><img src="assets/imgs/escenas/{img}.webp?v={VERSION}" alt="" loading="lazy" /></figure><div><h3>{t}</h3><p>{d}</p></div></li>' for i, (img, t, d) in enumerate(steps))
+    stage_cards = ''.join(f'<li class="step-card reveal" style="--d:{i}"><figure><img src="{X}/{img}.webp" alt="" loading="lazy" /></figure><div><h3>{t}</h3><p>{d}</p></div></li>' for i, (img, t, d) in enumerate(stages))
+    pillars = [
+     ('map-pin', T('Origen colombiano', 'Colombian origin'), T('Producción agrícola en Sonsón, Antioquia, una región que forma parte de nuestra identidad y de nuestra historia.', 'Grown in Sonsón, Antioquia, a region that is part of our identity and our story.')),
+     ('plant', T('Cercanía con el campo', 'Close to the farm'), T('Conocimiento del origen del producto y contacto directo con las actividades de cultivo, cosecha y selección.', 'First hand knowledge of the fruit and direct involvement in growing, harvest and sorting.')),
+     ('headset', T('Atención comercial personalizada', 'Personal sales support'), T('Buscamos comprender los requerimientos de cada cliente para desarrollar propuestas acordes con sus necesidades.', 'We take time to understand each buyer’s requirements and shape proposals around them.')),
+     ('handshake', T('Relaciones a largo plazo', 'Long term partnerships'), T('Creemos en las alianzas construidas sobre la transparencia, la responsabilidad y el crecimiento mutuo.', 'We believe in partnerships built on transparency, responsibility and shared growth.')),
+    ]
+    pillar_cards = ''.join(f'<article class="value-card reveal{" is-featured" if i == 0 else ""}" style="--d:{i}"><span class="value-icon">{icon(ic)}</span><span class="value-num">0{i + 1}</span><h3>{t}</h3><p>{d}</p></article>' for i, (ic, t, d) in enumerate(pillars))
+    specs = [
+     ('plant', T('Producto', 'Product'), T('Aguacate Hass fresco', 'Fresh Hass avocado')),
+     ('map-pin', T('Origen', 'Origin'), T('Sonsón, Antioquia, Colombia', 'Sonsón, Antioquia, Colombia')),
+     ('truck', T('Capacidad de suministro', 'Supply capacity'), T('50 toneladas, periodicidad por confirmar', '50 tons, frequency to be confirmed')),
+     ('package', T('Presentaciones y empaques', 'Presentation and packaging'), T('Según requerimientos del mercado de destino', 'Based on destination market requirements')),
+     ('clock', T('Frecuencia de abastecimiento', 'Supply frequency'), T('Según acuerdo comercial con el cliente', 'Agreed with each client')),
+     ('leaf', T('Conservación', 'Post harvest handling'), T('Manejo poscosecha según los requerimientos técnicos del mercado de destino', 'Handled to the technical requirements of the destination market')),
+     ('clipboard-text', T('Condiciones comerciales', 'Commercial terms'), T('Según negociación y acuerdo entre las partes', 'Subject to negotiation between the parties')),
+     ('check-circle', T('Calibres', 'Sizes'), T('Del 12 (340 a 390 g) al 32 (100 a 122 g)', 'From 12 (340 to 390 g) to 32 (100 to 122 g)')),
+    ]
+    spec_cards = ''.join(f'<div class="spec-card reveal" style="--d:{i % 4}"><span class="value-icon">{icon(ic)}</span><div><small>{k}</small><strong>{v}</strong></div></div>' for i, (ic, k, v) in enumerate(specs))
     faqs = [
-     (T('¿Qué productos ofrecen?', 'What products do you offer?'), T(f'Aguacate Hass de nuestra producción en Sonsón y un portafolio de {TOTAL} referencias entre frutas, hortalizas, tubérculos y plátanos. Puedes verlo completo en la sección Productos.', f'Hass avocados from our own production in Sonsón and a portfolio of {TOTAL} fruits, vegetables, tubers and plantains. You can browse it in the Products section.')),
-     (T('¿Dónde se cultiva el aguacate Hass?', 'Where are the Hass avocados grown?'), T('En Sonsón, Antioquia, una región de tradición agrícola. Desde allí conectamos la producción con nuestra operación comercial en Corabastos, Bogotá.', 'In Sonsón, Antioquia, a region with a long farming tradition. From there we connect production with our commercial operation at Corabastos, Bogotá.')),
-     (T('¿El envío tiene costo?', 'Is delivery free?'), T('Contamos con transporte propio y el envío es gratis en Bogotá. Para otras ciudades lo confirmamos según la cobertura de tu zona.', 'We run our own fleet and delivery is free in Bogotá. For other cities we confirm it based on coverage in your area.')),
-     (T('¿Cómo se paga el pedido?', 'How do I pay?'), T('Pagas contra entrega, cuando recibes tus productos en la fecha acordada.', 'You pay on delivery, when your products arrive on the agreed date.')),
-     (T('¿Venden al por mayor?', 'Do you sell wholesale?'), T('Sí. Manejamos precios mayoristas para negocios e instituciones. Volúmenes y frecuencia se acuerdan en cada cotización.', 'Yes. We offer wholesale prices to businesses and institutions. Volumes and frequency are agreed in each quote.')),
-     (T('¿A qué tipo de clientes atienden?', 'Who do you supply?'), T('Centrales de abastos, restaurantes, hoteles, casinos, colegios, hospitales, instituciones públicas y fundaciones, entre otros.', 'Wholesale markets, restaurants, hotels, cafeterias, schools, hospitals, public institutions and foundations, among others.')),
-     (T('¿Cómo solicito una cotización?', 'How do I request a quote?'), T('Escríbenos desde el formulario de contacto, por correo, Instagram o Facebook con los productos, el volumen y la zona de entrega. Te enviamos una propuesta detallada.', 'Use the contact form, email, Instagram or Facebook to tell us the products, volume and delivery area. We will send you a detailed proposal.')),
-     (T('¿Exportan sus productos?', 'Do you export?'), T('Hoy comercializamos a nivel nacional y avanzamos en una nueva etapa orientada a mercados internacionales. Si te interesa, conversemos.', 'Today we sell nationwide and are moving into a new stage focused on international markets. If you are interested, let’s talk.')),
+     (T('¿De dónde proviene su aguacate Hass?', 'Where do your Hass avocados come from?'), T('De nuestros cultivos en Sonsón, Antioquia, una región de montaña con tradición agrícola. Acompañamos el proceso desde el árbol hasta el empaque.', 'From our orchards in Sonsón, Antioquia, a mountain region with a long farming tradition. We follow the process from tree to packing.')),
+     (T('¿Qué calibres manejan?', 'Which sizes do you supply?'), T('Del calibre 12 (340 a 390 g) al 32 (100 a 122 g). La tabla completa de pesos está en la sección Distribución.', 'From size 12 (340 to 390 g) to size 32 (100 to 122 g). The full weight table is in the Distribution section.')),
+     (T('¿Cuál es su capacidad de suministro?', 'What is your supply capacity?'), T('Contamos con una capacidad de suministro de 50 toneladas. La periodicidad se define según el acuerdo comercial con cada cliente.', 'We have a supply capacity of 50 tons. Frequency is defined in the commercial agreement with each client.')),
+     (T('¿Qué certificaciones tienen?', 'Which certifications do you hold?'), T('Contamos con certificación Rainforest Alliance, certificación GLOBALG.A.P. y registro ante el ICA, Instituto Colombiano Agropecuario.', 'We are Rainforest Alliance and GLOBALG.A.P. certified and registered with ICA, the Colombian Agricultural Institute.')),
+     (T('¿Cómo se empaca el producto?', 'How is the fruit packed?'), T('Las presentaciones y empaques se definen según los requerimientos del mercado de destino, con materiales que protegen el fruto durante el transporte internacional.', 'Presentation and packaging follow the destination market requirements, using materials that protect the fruit in international transport.')),
+     (T('¿Cuáles son las condiciones comerciales?', 'What are the commercial terms?'), T('Se definen por negociación y acuerdo entre las partes. Cuéntanos tu mercado de destino y volumen para preparar una propuesta.', 'They are agreed between the parties. Tell us your destination market and volume and we will prepare a proposal.')),
+     (T('¿También venden en Colombia?', 'Do you also sell in Colombia?'), T(f'Sí. Desde Corabastos, Bogotá, distribuimos {TOTAL} referencias de frutas, hortalizas, tubérculos y plátanos. Puedes verlas en la sección Distribución.', f'Yes. From Corabastos, Bogotá, we distribute {TOTAL} fruits, vegetables, tubers and plantains. See the Distribution section.')),
+     (T('¿Cómo solicito una cotización de exportación?', 'How do I request an export quote?'), T('Escríbenos por WhatsApp, correo o el formulario de contacto con el mercado de destino, el volumen, los calibres y la frecuencia que necesitas.', 'Message us on WhatsApp, by email or through the contact form with your destination market, volume, sizes and frequency.')),
     ]
     faq_html = ''.join(f'<details{" open" if i == 0 else ""}><summary>{q}</summary><p>{a}</p></details>' for i, (q, a) in enumerate(faqs))
     faq_ld = json.dumps({'@context': 'https://schema.org', '@type': 'FAQPage', 'mainEntity': [
         {'@type': 'Question', 'name': q, 'acceptedAnswer': {'@type': 'Answer', 'text': a}} for q, a in faqs]}, ensure_ascii=False)
-    org_ld = json.dumps({'@context': 'https://schema.org', '@type': 'Organization', 'name': 'Agro Colombia Company', 'url': SITE + '/',
-        'logo': SITE + '/assets/imgs/brand/logo-completo.png', 'email': EMAIL, 'sameAs': [IG, FB], 'slogan': 'Cultivando oportunidades',
+    org_ld = json.dumps({'@context': 'https://schema.org', '@type': 'Organization', 'name': 'Agro Colombia Company', 'legalName': LEGAL_NAME, 'taxID': NIT,
+        'url': SITE + '/', 'logo': SITE + '/assets/imgs/brand/logo-completo.png', 'email': EMAIL, 'telephone': WA_DISPLAY, 'sameAs': [IG, FB], 'slogan': 'Cultivando oportunidades',
         'address': {'@type': 'PostalAddress', 'addressLocality': 'Bogotá', 'addressRegion': 'Bogotá D. C.', 'addressCountry': 'CO'},
-        'description': 'Empresa colombiana dedicada a la producción y distribución de productos agrícolas frescos, con especial enfoque en aguacate Hass de Sonsón, Antioquia.'}, ensure_ascii=False)
+        'hasCredential': [{'@type': 'EducationalOccupationalCredential', 'name': n, 'url': u} for _, n, u, _ in CERTS],
+        'description': 'Productor y exportador colombiano de aguacate Hass de Sonsón, Antioquia, con certificaciones Rainforest Alliance, GLOBALG.A.P. y registro ICA.'}, ensure_ascii=False)
     extra = f'  <script type="application/ld+json">{org_ld}</script>\n  <script type="application/ld+json">{faq_ld}</script>\n'
-    body = f'''<main id="contenido">
+    body = f"""<main id="contenido">
     <section class="hero hero-scroll on-dark" data-hero-scroll aria-labelledby="hero-title">
       <div class="hero-sticky">
         <div class="hero-bg"><img src="assets/imgs/origen/cultivo-hass-montana.jpg" alt="" fetchpriority="high" /></div>
         <div class="hero-copy">
-          <p class="eyebrow reveal">{T("Cultivando oportunidades", "Cultivating opportunity")}</p>
-          <h1 id="hero-title" class="reveal" style="--d:1">{T("El origen de algo", "Something good")} <em>{T("bueno", "starts")}</em><br />{T("se cultiva.", "in the soil.")}</h1>
-          <p class="hero-intro reveal" style="--d:2">{T("Cultivamos aguacate Hass en Sonsón, Antioquia, y abastecemos a más de 200 clientes con frutas, hortalizas, tubérculos y plátanos desde Corabastos, Bogotá.", "We grow Hass avocados in Sonsón, Antioquia, and supply more than 200 clients with fruit, vegetables, tubers and plantains from Corabastos, Bogotá.")}</p>
+          <p class="eyebrow reveal">{T("Aguacate Hass colombiano de exportación", "Colombian Hass avocados for export")}</p>
+          <h1 id="hero-title" class="reveal" style="--d:1">{T("De nuestras montañas", "From our mountains")} <em>{T("al mundo.", "to the world.")}</em></h1>
+          <p class="hero-intro reveal" style="--d:2">{T("Producimos aguacate Hass fresco en Sonsón, Antioquia, con certificaciones internacionales y una propuesta comercial que se adapta a las necesidades de cada mercado.", "We grow fresh Hass avocados in Sonsón, Antioquia, with international certifications and a commercial approach tailored to each market.")}</p>
           <div class="hero-links reveal" style="--d:3">
-            <a class="button button-gold" href="contacto.html">{T("Solicita tu cotización", "Request a quote")} {ARROW}</a>
-            <a class="text-link" href="#portafolio">{T("Ver portafolio", "See our portfolio")} {icon("arrow-down")}</a>
+            <a class="button button-gold" href="contacto.html?tipo=exportacion">{T("Cotiza tu exportación", "Request an export quote")} {ARROW}</a>
+            <a class="text-link" href="#ficha">{T("Ver ficha técnica", "See technical sheet")} {icon("arrow-down")}</a>
           </div>
           <ul class="hero-stats reveal" style="--d:4">
-            <li><strong data-count="10" data-prefix="+">+10</strong><span>{T("años de experiencia", "years of experience")}</span></li>
-            <li><strong data-count="200" data-prefix="+">+200</strong><span>{T("clientes", "clients")}</span></li>
-            <li><strong data-count="{TOTAL}">{TOTAL}</strong><span>{T("referencias", "products")}</span></li>
+            <li><strong data-count="50" data-suffix=" t">50 t</strong><span>{T("capacidad de suministro", "supply capacity")}</span></li>
+            <li><strong data-count="11">11</strong><span>{T("calibres disponibles", "available sizes")}</span></li>
+            <li><strong data-count="3">3</strong><span>{T("certificaciones y registros", "certifications")}</span></li>
           </ul>
         </div>
         <div class="avocado-stage" aria-hidden="true">
           <div class="avocado"><div class="avocado-glow"></div>{AVOCADO_SVG}</div>
           <ol class="avocado-steps">
-            <li><b>01 · {T("Cultivo", "Grow")}</b>{T("Sonsón, Antioquia", "Sonsón, Antioquia")}</li>
-            <li><b>02 · {T("Selección", "Select")}</b>{T("A tu medida", "To your spec")}</li>
-            <li><b>03 · {T("Entrega", "Deliver")}</b>{T("Pago contra entrega", "Cash on delivery")}</li>
+            <li><b>01 · {T("Cultivo", "Growing")}</b>{T("Sonsón, Antioquia", "Sonsón, Antioquia")}</li>
+            <li><b>02 · {T("Selección", "Sorting")}</b>{T("Por calibre y calidad", "By size and quality")}</li>
+            <li><b>03 · {T("Exportación", "Export")}</b>{T("Al mercado de destino", "To your market")}</li>
           </ol>
         </div>
         <a class="scroll-cue" href="#historia"><span class="scroll-line"></span>{T("Desliza para abrir el aguacate", "Scroll to open the avocado")}</a>
       </div>
     </section>
 
+    <section class="brand-pillars on-dark" aria-label="{T("Nuestros pilares", "Our pillars")}">
+      <ul>
+        <li class="reveal">{icon("map-pin")}<span>{T("Origen Sonsón, Antioquia", "Origin Sonsón, Antioquia")}</span></li>
+        <li class="reveal" style="--d:1">{icon("plant")}<span>{T("Producción responsable", "Responsible production")}</span></li>
+        <li class="reveal" style="--d:2">{icon("globe-simple")}<span>{T("Mercados internacionales", "International markets")}</span></li>
+        <li class="reveal" style="--d:3">{icon("handshake")}<span>{T("Alianzas de largo plazo", "Long term partnerships")}</span></li>
+      </ul>
+    </section>
+
     <section class="manifesto on-deep on-dark" id="historia">
       <div class="manifesto-inner">
-        <p class="eyebrow">{T("Una historia que empieza en la tierra", "A story rooted in the land")}</p>
-        {word_reveal("Del campo colombiano hacia nuevos mercados.", "From Colombian fields to new markets.", "4")}
-        <p class="reveal">{T("Somos una empresa colombiana que produce y distribuye productos agrícolas frescos, directamente desde los cultivos y cosechas.", "We are a Colombian company that grows and distributes fresh produce, straight from the farms and harvests.")}</p>
+        <p class="eyebrow">{T("Nuestra tierra conecta al mundo", "Our land connects with the world")}</p>
+        {word_reveal("Nuestro origen es Colombia. Nuestro horizonte es el mundo.", "Our origin is Colombia. Our horizon is the world.", "4")}
+        <p class="reveal">{T("Cada cosecha representa el trabajo de nuestra tierra. Cada nuevo mercado es una oportunidad para llevar ese esfuerzo más lejos.", "Every harvest carries the work of our land. Every new market is a chance to take that effort further.")}</p>
         <a class="text-link reveal" href="nosotros.html">{T("Conoce nuestra historia", "Read our story")} {ARROW}</a>
       </div>
       <img class="manifesto-figure" src="assets/imgs/brand/aguacate-hass-rama.svg?v={VERSION}" alt="" aria-hidden="true" />
     </section>
 
-    <section class="section" id="portafolio">
+    <section class="section editorial-split" id="origen">
+      <figure class="editorial-media reveal"><img src="{X}/valle-niebla.webp" alt="{T("Montañas de Sonsón, Antioquia, cubiertas de niebla", "Misty mountains of Sonsón, Antioquia")}" loading="lazy" /><figcaption>{icon("map-pin")}{T("Sonsón, Antioquia", "Sonsón, Antioquia")}</figcaption></figure>
+      <div class="editorial-copy">
+        <p class="eyebrow reveal">{T("Nuestro origen", "Our origin")}</p>
+        <h2 class="h-section reveal" style="--d:1">{T("Todo comienza", "It all begins")} <em>{T("en nuestra tierra.", "in our land.")}</em></h2>
+        <p class="reveal" style="--d:2">{T("En el corazón de las montañas de Sonsón, Antioquia, donde la naturaleza y la tradición agrícola forman parte de nuestra identidad, comienza la historia de nuestro aguacate Hass.", "In the heart of the mountains of Sonsón, Antioquia, where nature and farming tradition are part of who we are, the story of our Hass avocados begins.")}</p>
+        <p class="reveal" style="--d:3">{T("Entre paisajes verdes y tierras cultivadas con dedicación crece un fruto que representa mucho más que una cosecha: el esfuerzo de quienes trabajan el campo colombiano.", "Among green hills and carefully tended land grows a fruit that means far more than a harvest: the effort of the people who work Colombia’s countryside.")}</p>
+<p class="pull-quote reveal" style="--d:4">{T("Y el nuestro comienza en Colombia.", "And ours begins in Colombia.")}</p>
+        <ul class="values-row reveal" style="--d:4">{origin_chips}</ul>
+      </div>
+    </section>
+
+    <section class="section editorial-split is-flipped on-dark">
+      <figure class="editorial-media reveal"><img src="{X}/agricultor.webp" alt="{T("Agricultor cosechando aguacate Hass", "Farmer harvesting Hass avocados")}" loading="lazy" /></figure>
+      <div class="editorial-copy">
+        <p class="eyebrow reveal">{T("Las manos que hacen posible cada cosecha", "The hands behind every harvest")}</p>
+        <h2 class="h-section reveal" style="--d:1">{T("Detrás de cada cosecha", "Behind every harvest")} <em>{T("hay una historia.", "there is a story.")}</em></h2>
+        <p class="reveal" style="--d:2">{T("Desde el cuidado de los árboles hasta la recolección y selección de los frutos, las manos de nuestros agricultores colombianos son parte esencial del proceso. Personas que conocen la tierra y saben que la calidad comienza mucho antes de que el producto llegue al consumidor.", "From caring for the trees to picking and sorting the fruit, the hands of our Colombian growers are essential to the process. People who know the land and understand that quality starts long before the fruit reaches the consumer.")}</p>
+<p class="pull-quote reveal" style="--d:3">{T("Porque detrás de cada aguacate hay manos que trabajan, familias que sueñan y una tierra que nos llena de orgullo.", "Because behind every avocado there are hands that work, families with dreams and a land that makes us proud.")}</p>
+        <ul class="values-row reveal" style="--d:3">{people_chips}</ul>
+      </div>
+    </section>
+
+    <section class="section editorial-split" id="producto">
+      <figure class="editorial-media reveal"><img src="{X}/mitad-hass.webp" alt="{T("Aguacate Hass partido por la mitad", "Hass avocado cut in half")}" loading="lazy" /></figure>
+      <div class="editorial-copy">
+        <p class="eyebrow reveal">{T("Un fruto que representa nuestra tierra", "A fruit that represents our land")}</p>
+        <h2 class="h-section reveal" style="--d:1">{T("Aguacate Hass:", "Hass avocado:")} <em>{T("la riqueza de nuestro origen.", "the richness of our origin.")}</em></h2>
+        <p class="reveal" style="--d:2">{T("Reconocido internacionalmente por su textura cremosa, su sabor característico y su versatilidad gastronómica, el aguacate Hass se ha convertido en un producto apreciado en diferentes mercados.", "Known worldwide for its creamy texture, distinctive flavor and culinary versatility, the Hass avocado is valued in markets around the world.")}</p>
+        <p class="reveal" style="--d:3">{T("Conectamos la producción colombiana con compradores que valoran el origen, la calidad y las relaciones comerciales de largo plazo.", "We connect Colombian production with buyers who value origin, quality and long term commercial relationships.")}</p>
+<p class="pull-quote reveal" style="--d:4">{T("Un fruto colombiano con vocación internacional.", "A Colombian fruit made for the world.")}</p>
+        <ul class="values-row reveal" style="--d:4">{attrs}</ul>
+      </div>
+    </section>
+
+    <section class="section on-dark steps-section" id="proceso">
       <div class="section-head">
-        <div><p class="eyebrow reveal">{T("Nuestro portafolio", "Our portfolio")}</p><h2 class="h-section reveal" style="--d:1">{T("Todo lo que tu operación", "Everything your operation")} <em>{T("necesita.", "needs.")}</em></h2></div>
-        <p class="reveal" style="--d:2">{T("Frutas, hortalizas, tubérculos y plátanos seleccionados desde el cultivo, con calidad, frescura y continuidad en el suministro.", "Fruit, vegetables, tubers and plantains selected at the farm, with consistent quality, freshness and supply.")}</p>
+        <div><p class="eyebrow reveal">{T("Del árbol a la selección", "From tree to sorting")}</p><h2 class="h-section reveal" style="--d:1">{T("Cada etapa", "Every stage")} <em>{T("importa.", "matters.")}</em></h2></div>
+        <p class="reveal" style="--d:2">{T("La calidad se construye desde el origen y requiere atención durante todo el recorrido. Así preparamos nuestro aguacate Hass para los mercados internacionales.", "Quality is built from the origin and needs care along the whole journey. This is how we prepare our Hass avocados for international markets.")}</p>
       </div>
-      <div class="category-grid">{cat_cards}</div>
-      <div class="product-marquee" aria-label="{T("Muestra de productos", "Product sample")}">{marquee_rows}</div>
+      <ol class="steps steps-5">{stage_cards}</ol>
+      <p class="pull-quote is-center reveal" style="--d:1">{T("Nuestro propósito es que el valor de nuestra tierra se refleje en cada entrega.", "Our purpose is for the value of our land to show in every delivery.")}</p>
+    </section>
+
+    <section class="section" id="ficha">
+      <div class="section-head">
+        <div><p class="eyebrow reveal">{T("Información técnica y comercial", "Technical and commercial information")}</p><h2 class="h-section reveal" style="--d:1">{T("Nuestro aguacate Hass", "Our Hass avocados")} <em>{T("para mercados internacionales.", "for international markets.")}</em></h2></div>
+        <p class="reveal" style="--d:2">{T("Un producto colombiano con especificaciones que se adaptan a su mercado.", "A Colombian product with specifications that adapt to your market.")}</p>
+      </div>
+      <div class="spec-grid">{spec_cards}</div>
       <div class="section-cta reveal">
-        <a class="button button-gold" href="servicios.html#catalogo">{T(f"Explorar las {TOTAL} referencias", f"Browse all {TOTAL} products")} {ARROW}</a>
-        <a class="text-link" href="assets/docs/catalogo-nacional-agro-colombia.pdf" target="_blank" rel="noopener">{T("Descargar catálogo PDF", "Download PDF catalog")} {ARROW}</a>
+        <a class="button button-gold" href="contacto.html?tipo=exportacion">{T("Solicitar ficha y cotización", "Request sheet and quote")} {ARROW}</a>
+        <a class="text-link" href="servicios.html#calibres">{T("Ver tabla de calibres", "See the size table")} {ARROW}</a>
       </div>
+    </section>
+
+    <section class="section section-alt" id="certificaciones">
+      <div class="section-head">
+        <div><p class="eyebrow reveal">{T("Certificaciones y registros", "Certifications and registrations")}</p><h2 class="h-section reveal" style="--d:1">{T("Calidad respaldada", "Quality backed")} <em>{T("por estándares internacionales.", "by international standards.")}</em></h2></div>
+        <p class="reveal" style="--d:2">{T("Nuestro cultivo cumple con estándares de sostenibilidad, buenas prácticas agrícolas y requisitos fitosanitarios para la exportación. Toca cada certificación para ir a su sitio oficial.", "Our orchards meet sustainability, good agricultural practice and plant health requirements for export. Tap each certification to visit its official website.")}</p>
+      </div>
+      {cert_cards()}
     </section>
 
     <section class="section on-dark">
       <div class="section-head">
-        <div><p class="eyebrow reveal">{T("Por qué trabajar con nosotros", "Why work with us")}</p><h2 class="h-section reveal" style="--d:1">{T("Un servicio pensado para que tu operación", "Service designed so your operation")} <em>{T("no se detenga.", "never stops.")}</em></h2></div>
-        <p class="reveal" style="--d:2">{T("Productos frescos, un servicio eficiente y atención personalizada para responder a cada cliente con compromiso.", "Fresh produce, efficient service and personal attention for every client.")}</p>
+        <div><p class="eyebrow reveal">{T("Nuestra propuesta de valor", "Our value proposition")}</p><h2 class="h-section reveal" style="--d:1">{T("Más que un proveedor,", "More than a supplier,")} <em>{T("un aliado comercial.", "a business partner.")}</em></h2></div>
+        <p class="reveal" style="--d:2">{T("Construir relaciones comerciales internacionales requiere confianza, comunicación, compromiso y la capacidad de comprender las necesidades de cada comprador.", "Building international trade relationships takes trust, communication, commitment and a real understanding of each buyer’s needs.")}</p>
       </div>
-      <div class="value-grid">{value_cards}</div>
+      <div class="value-grid is-4">{pillar_cards}</div>
+      <p class="pull-quote is-center reveal" style="--d:1">{T("Construyamos juntos relaciones que generen valor, oportunidades y un impacto positivo en el largo plazo.", "Let’s build relationships together that create value, opportunity and a positive long term impact.")}</p>
     </section>
 
     <section class="section reel-section on-deep on-dark" aria-labelledby="reel-title">
@@ -600,12 +694,23 @@ def build_index():
             <li><button type="button" data-seek="10">{icon("plant")}<span><b>{T("Cuidado", "Care")}</b>{T("Acompañamos cada etapa del cultivo, desde la tierra hasta la cosecha.", "We look after every stage, from soil to harvest.")}</span><small>0:10</small></button></li>
             <li><button type="button" data-seek="17">{icon("check-circle")}<span><b>{T("Calidad", "Quality")}</b>{T("Seleccionamos el producto según los requerimientos de cada cliente.", "Produce is selected to each client’s requirements.")}</span><small>0:17</small></button></li>
           </ol>
-          <a class="text-link reveal" style="--d:4" href="servicios.html#aguacate">{T("Conoce el aguacate Hass", "Discover our Hass avocados")} {ARROW}</a>
         </div>
       </div>
     </section>
 
-    <section class="section crop-teaser">
+    <section class="section horizon-section">
+      <div class="horizon-grid">
+        <figure class="horizon-main reveal"><img src="{X}/puerto-cajas.webp" alt="{T("Cajas de aguacate Hass Agro Colombia en puerto", "Agro Colombia Hass avocado crates at port")}" loading="lazy" /></figure>
+        <div class="horizon-copy">
+          <p class="eyebrow reveal">{T("Cuando el campo crece, crecen las oportunidades", "When the countryside grows, opportunities grow")}</p>
+          <h2 class="h-section reveal" style="--d:1">{T("El próximo capítulo", "The next chapter")} <em>{T("podemos escribirlo juntos.", "we can write together.")}</em></h2>
+          <p class="reveal" style="--d:2">{T("Queremos conectar la riqueza agrícola colombiana con empresas que crean, como nosotros, en el valor de construir alianzas duraderas, y que nuestro crecimiento comercial represente nuevas posibilidades para las familias que hacen parte de esta cadena productiva.", "We want to connect Colombia’s farming wealth with companies that, like us, value lasting partnerships, so our commercial growth also creates new opportunities for the families in this supply chain.")}</p>
+          <div class="horizon-thumbs reveal" style="--d:3"><img src="{X}/contenedor.webp" alt="{T("Carga lista para contenedor", "Cargo ready for container")}" loading="lazy" /><img src="{X}/carga-aerea.webp" alt="{T("Carga aérea", "Air cargo")}" loading="lazy" /></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section crop-teaser on-dark on-deep">
       <div class="section-head">
         <div><p class="eyebrow reveal">{T("Nuestro cultivo", "Our orchard")}</p><h2 class="h-section reveal" style="--d:1">{T("Fotos reales", "Real photos")} <em>{T("desde Sonsón.", "from Sonsón.")}</em></h2></div>
         <p class="reveal" style="--d:2">{T("Árboles en producción, frutos en la rama y cosecha en canastillas. Así trabajamos todos los días.", "Trees in production, fruit on the branch and harvest in crates. This is how we work every day.")}</p>
@@ -615,62 +720,29 @@ def build_index():
     </section>
 
     <section class="section">
-      <div class="section-head">
-        <div><p class="eyebrow reveal">{T("A quiénes abastecemos", "Who we supply")}</p><h2 class="h-section reveal" style="--d:1">{T("Diferentes sectores,", "Different sectors,")} <em>{T("un mismo compromiso.", "one commitment.")}</em></h2></div>
-        <p class="reveal" style="--d:2">{T("Llevamos lo mejor del campo colombiano a cada operación, con un servicio confiable y adaptado a cada cliente.", "We bring the best of Colombian farms to every operation, with reliable service tailored to each client.")}</p>
-      </div>
-      <div class="sector-grid">{sector_cards}</div>
+      <a class="national-band reveal" href="servicios.html">
+        <img src="assets/imgs/escenas/cat-frutas.webp" alt="" loading="lazy" />
+        <div><p class="eyebrow">{T("Distribución nacional", "National distribution")}</p><h3>{T(f"¿Buscas abastecimiento en Colombia? Distribuimos {TOTAL} referencias desde Corabastos, Bogotá.", f"Sourcing in Colombia? We distribute {TOTAL} products from Corabastos, Bogotá.")}</h3></div>
+        <span class="button button-gold">{T("Ver distribución nacional", "See national distribution")} {ARROW}</span>
+      </a>
     </section>
 
-    <section class="section on-dark steps-section">
-      <div class="section-head">
-        <div><p class="eyebrow reveal">{T("Cómo funciona", "How it works")}</p><h2 class="h-section reveal" style="--d:1">{T("Del pedido a tu operación", "From order to operation")} <em>{T("en tres pasos.", "in three steps.")}</em></h2></div>
-        <p class="reveal" style="--d:2">{T("Un proceso simple, seguro y eficiente para que recibas productos frescos y a tiempo.", "A simple, secure and efficient process so fresh produce arrives on time.")}</p>
-      </div>
-      <ol class="steps">{step_cards}</ol>
-      <div class="section-cta reveal"><a class="text-link" href="contacto.html#proceso">{T("Ver el proceso completo", "See the full process")} {icon("arrow-right")}</a></div>
-    </section>
-
-    <section class="section section-alt map-section" id="cobertura" aria-labelledby="map-title">
-      <div class="map-intro">
-        <p class="eyebrow reveal">{T("Cobertura nacional", "National coverage")}</p>
-        <h2 class="h-section reveal" id="map-title" style="--d:1">{T("Presencia en Bogotá", "Present in Bogotá")} <em>{T("y a nivel nacional.", "and nationwide.")}</em></h2>
-        <p class="reveal" style="--d:2">{T("Explora los 32 departamentos y Bogotá D. C. Te confirmamos destinos y disponibilidad vigentes para tu zona.", "Explore Colombia’s 32 departments and Bogotá D. C. We confirm current destinations and availability for your area.")}</p>
-        <ul class="map-legend reveal" style="--d:3">
-          <li><span class="legend-dot is-home"></span><span><b>{T("Origen", "Origin")}</b>{T("Sonsón, Antioquia", "Sonsón, Antioquia")}</span></li>
-          <li><span class="legend-dot is-home"></span><span><b>{T("Operación", "Operations")}</b>{T("Corabastos, Bogotá D. C.", "Corabastos, Bogotá D. C.")}</span></li>
-          <li><span class="legend-dot"></span><span><b>{T("Cobertura", "Coverage")}</b>{T("Según destino y disponibilidad", "Depending on destination and availability")}</span></li>
-        </ul>
-      </div>
-      <div class="map-card on-dark reveal" style="--d:1">
-        <div class="map-canvas">
-          <svg class="department-map" viewBox="0 0 640 680" role="group" aria-label="{T("Mapa interactivo de departamentos de Colombia", "Interactive map of Colombian departments")}"><g data-map-geometry>{MAP_PATHS}</g></svg>
-        </div>
-        <div class="map-details">
-          <label for="department-select">{T("Explora el mapa", "Explore the map")}</label>
-          <div class="select-wrap"><select id="department-select" data-map-select><option value="">{T("Selecciona un departamento", "Select a department")}</option>{MAP_OPTIONS}</select></div>
-          <div class="map-selection" aria-live="polite"><span data-map-region>{T("Cobertura nacional", "National coverage")}</span><h3 data-map-name>Colombia</h3><p data-map-copy>{T("Antioquia es nuestro origen y Bogotá nuestra operación comercial. Selecciona un departamento para consultar destinos.", "Antioquia is our origin and Bogotá our commercial hub. Select a department to ask about destinations.")}</p></div>
-          <a class="button button-gold" href="contacto.html">{T("Hablar con el equipo", "Talk to our team")} {ARROW}</a>
-          <p class="map-attribution">{T("Límites administrativos:", "Administrative boundaries:")} <a href="https://www.geoboundaries.org/" target="_blank" rel="noopener">geoBoundaries</a>, OpenStreetMap / Wambacher, <a href="https://opendatacommons.org/licenses/odbl/1-0/" target="_blank" rel="noopener">ODbL 1.0</a>.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section faq-section" id="preguntas">
+    <section class="section faq-section section-alt" id="preguntas">
       <div class="faq-heading">
         <p class="eyebrow reveal">{T("Preguntas frecuentes", "FAQ")}</p>
-        <h2 class="h-section reveal" style="--d:1">{T("Lo que nos preguntan", "What clients ask")} <em>{T("antes de comprar.", "before ordering.")}</em></h2>
+        <h2 class="h-section reveal" style="--d:1">{T("Lo que preguntan", "What buyers ask")} <em>{T("nuestros compradores.", "before ordering.")}</em></h2>
         <p class="reveal" style="--d:2">{T("Si tu pregunta no está aquí, escríbenos y te respondemos con la información vigente.", "If your question is not here, write to us and we will reply with current details.")}</p>
-        <a class="text-link reveal" style="--d:3" href="contacto.html">{T("Hacer una pregunta", "Ask a question")} {ARROW}</a>
+        <a class="text-link reveal" style="--d:3" href="contacto.html?tipo=exportacion">{T("Hacer una pregunta", "Ask a question")} {ARROW}</a>
       </div>
       <div class="faq-list reveal" style="--d:1">{faq_html}</div>
     </section>
-{closing(T("¿Listo para abastecer", "Ready to stock"), T("tu negocio?", "your business?"), T("Cuéntanos qué productos necesitas y a dónde deben llegar. Te respondemos con una cotización a la medida.", "Tell us which products you need and where they should go. We will reply with a tailored quote."))}  </main>
-'''
-    return (head('Agro Colombia Company | Aguacate Hass y productos agrícolas frescos', 'Agro Colombia Company | Hass avocados and fresh produce',
-                 'Aguacate Hass de Sonsón, Antioquia, y más de 80 referencias de frutas, hortalizas, tubérculos y plátanos. Transporte propio, envío gratis en Bogotá y pago contra entrega.',
-                 'Hass avocados from Sonsón, Antioquia, plus more than 80 fruits, vegetables, tubers and plantains. Own fleet, free delivery in Bogotá and cash on delivery.',
-                 'index.html', extra=extra) + header('index.html') + body + footer())
+{closing(T("Cultivemos", "Let’s cultivate"), T("oportunidades juntos.", "opportunities together."), T("Conectemos el campo colombiano con nuevos mercados. Cuéntanos tu destino, volumen y calibres y te preparamos una propuesta.", "Let’s connect Colombian farms with new markets. Tell us your destination, volume and sizes and we will prepare a proposal."), cta=T("Cotiza tu exportación", "Request an export quote"), perks=[('check-circle', T('Calidad', 'Quality')), ('handshake', T('Confianza', 'Trust')), ('users-three', T('Alianzas', 'Partnerships')), ('plant', T('Crecimiento', 'Growth'))])}  </main>
+"""
+    body = body.replace('href="contacto.html"', 'href="contacto.html?tipo=exportacion"')
+    return (head('Agro Colombia Company | Exportadores de aguacate Hass colombiano', 'Agro Colombia Company | Colombian Hass avocado exporter',
+                 'Aguacate Hass fresco de Sonsón, Antioquia, para mercados internacionales. Certificaciones Rainforest Alliance, GLOBALG.A.P. y registro ICA. Capacidad de 50 toneladas.',
+                 'Fresh Hass avocados from Sonsón, Antioquia, for international markets. Rainforest Alliance and GLOBALG.A.P. certified, ICA registered. 50 ton supply capacity.',
+                 'index.html', 'assets/imgs/exportacion/mitad-hass.webp', extra=extra) + header('index.html') + body + footer())
 
 # ---------------------------------------------------------------- NOSOTROS
 def build_nosotros():
@@ -680,7 +752,7 @@ def build_nosotros():
     body = f'''<main id="contenido">
 {page_hero(T("Nosotros", "About us"), T("Nuestra historia", "Our story"),
   f'{T("Una empresa colombiana,", "A Colombian company,")} <em>{T("conectada con su origen.", "connected to its roots.")}</em>',
-  T("Producimos y distribuimos productos agrícolas frescos, con especial enfoque en aguacate Hass. Unimos el trabajo del campo con la operación comercial en Colombia.", "We grow and distribute fresh produce, with a special focus on Hass avocados, connecting farm work with commercial operations across Colombia."),
+  T("Producimos aguacate Hass para mercados internacionales y distribuimos productos agrícolas frescos en Colombia. Unimos el trabajo del campo con la operación comercial.", "We grow Hass avocados for international markets and distribute fresh produce across Colombia, connecting farm work with commercial operations."),
   bg_video('huerto'))}
     <section class="section editorial-split">
       <figure class="editorial-media reveal"><img src="assets/imgs/origen/paisaje-sonson.jpeg" alt="{T("Paisaje de la zona de cultivo en Sonsón, Antioquia", "Farmland in Sonsón, Antioquia")}" loading="lazy" /><figcaption>{icon("map-pin")}{T("Sonsón, Antioquia", "Sonsón, Antioquia")}</figcaption></figure>
@@ -739,7 +811,7 @@ def build_nosotros():
       <div class="editorial-copy">
         <p class="eyebrow reveal">{T("Nuestra historia sigue creciendo", "Our story keeps growing")}</p>
         <h2 class="h-section reveal" style="--d:1">{T("De Colombia", "From Colombia")} <em>{T("hacia nuevos mercados.", "to new markets.")}</em></h2>
-        <p class="reveal" style="--d:2">{T("Lo que comienza en las montañas de Sonsón busca llegar cada vez más lejos. Nuestra experiencia en el mercado colombiano es el punto de partida de una nueva etapa orientada a mercados internacionales.", "What begins in the mountains of Sonsón aims to go further. Our experience in the Colombian market is the starting point for a new stage focused on international markets.")}</p>
+        <p class="reveal" style="--d:2">{T("Lo que comienza en las montañas de Sonsón busca llegar cada vez más lejos. Con certificaciones Rainforest Alliance, GLOBALG.A.P. y registro ICA, llevamos nuestro aguacate Hass a compradores que valoran el origen y la calidad.", "What begins in the mountains of Sonsón aims to go further. With Rainforest Alliance and GLOBALG.A.P. certification and ICA registration, we take our Hass avocados to buyers who value origin and quality.")}</p>
         <a class="button button-gold reveal" style="--d:3" href="contacto.html">{T("Conversemos", "Let’s talk")} {ARROW}</a>
       </div>
     </section>
@@ -752,49 +824,141 @@ def build_nosotros():
 
 # ---------------------------------------------------------------- PRODUCTOS
 def build_productos():
+    MAP_PATHS, MAP_OPTIONS = map_svg()
     chips = (f'<button class="chip" type="button" data-filter="all" aria-pressed="true">{T("Todos", "All")} <small>{TOTAL}</small></button>' +
              ''.join(f'<button class="chip" type="button" data-filter="{k}" aria-pressed="false">{name} <small>{COUNTS[k]}</small></button>' for k, name, _, _ in CATS))
     items = ''.join(f'<li data-cat="{k}">{tile(i)}</li>' for k in CATALOG for i in CATALOG[k])
-    body = f'''<main id="contenido">
-{page_hero(T("Productos", "Products"), T("Portafolio", "Portfolio"),
+    cat_cards = ''.join(f"""<a class="category-card reveal" style="--d:{n}" href="#{k}">
+          <img src="assets/imgs/escenas/{img}" alt="" loading="lazy" />
+          <div class="category-card-body"><span class="category-count" data-count="{COUNTS[k]}">{COUNTS[k]}</span><h3>{name}</h3><p>{desc}</p>
+          <span class="card-link">{T("Ver referencias", "See products")} {icon("arrow-up-right")}</span></div></a>""" for n, (k, name, img, desc) in enumerate(CATS))
+    values = [
+     ('headset', T('Atención personalizada', 'Personal service'), T('Nos adaptamos a las necesidades de cada cliente para ofrecer soluciones a la medida.', 'We adapt to each client’s needs with tailored solutions.')),
+     ('truck', T('Transporte y envío gratis', 'Own fleet, free delivery'), T('Transporte propio y envío gratuito en Bogotá, y según cobertura a nivel nacional.', 'Our own trucks and free delivery in Bogotá, and nationwide depending on coverage.')),
+     ('leaf', T('Productos frescos y de calidad', 'Fresh, quality produce'), T('Seleccionamos directamente desde los cultivos para garantizar frescura y calidad.', 'Selected straight from the farms to guarantee freshness and quality.')),
+     ('coins', T('Precio mayorista', 'Wholesale prices'), T('Precios competitivos que dejan un mayor beneficio para tu negocio.', 'Competitive prices that leave more margin for your business.')),
+     ('hand-coins', T('Pago contra entrega', 'Cash on delivery'), T('Confianza y seguridad en cada compra: pagas cuando recibes.', 'Trust and security in every order: you pay when it arrives.')),
+     ('clock', T('Puntualidad garantizada', 'On time, every time'), T('Cumplimos los tiempos de entrega para que tu operación nunca se detenga.', 'We meet delivery times so your operation never stops.')),
+    ]
+    value_cards = ''.join(f"""<article class="value-card reveal{" is-featured" if i == 1 else ""}" style="--d:{i % 3}"><span class="value-icon">{icon(ic)}</span><span class="value-num">0{i + 1}</span><h3>{t}</h3><p>{d}</p></article>""" for i, (ic, t, d) in enumerate(values))
+    sectors = [('abastos', 'storefront', T('Centrales de abastos', 'Wholesale markets')), ('restaurantes', 'fork-knife', T('Restaurantes', 'Restaurants')),
+               ('hoteles', 'bed', T('Hoteles', 'Hotels')), ('casinos', 'cooking-pot', T('Casinos y comedores', 'Cafeterias')),
+               ('colegios', 'graduation-cap', T('Colegios', 'Schools')), ('hospitales', 'first-aid', T('Hospitales', 'Hospitals')),
+               ('carceles', 'buildings', T('Centros penitenciarios', 'Correctional facilities')), ('ejercito', 'medal', T('Ejército', 'Army')),
+               ('policia', 'shield-star', T('Policía', 'Police')), ('fundaciones', 'hand-heart', T('Fundaciones', 'Foundations'))]
+    sector_cards = ''.join(f'<figure class="sector-card reveal" style="--d:{i % 5}"><img src="assets/imgs/escenas/sector-{k}.webp" alt="" loading="lazy" /><span>{icon(ic)}{label}</span></figure>' for i, (k, ic, label) in enumerate(sectors))
+    steps = [('paso-1', T('Cuéntanos qué necesitas', 'Tell us what you need'), T('Productos, volumen y zona de entrega. Te asesoramos de forma personalizada.', 'Products, volume and delivery area. We advise you one on one.')),
+             ('paso-3', T('Aprueba tu cotización', 'Approve your quote'), T('Te enviamos una propuesta según disponibilidad y confirmamos la fecha de entrega.', 'We send a proposal based on availability and confirm the delivery date.')),
+             ('paso-6', T('Recibe y paga al llegar', 'Receive and pay on arrival'), T('Llevamos tu pedido con transporte propio y pagas contra entrega.', 'We deliver with our own fleet and you pay on delivery.'))]
+    step_cards = ''.join(f'<li class="step-card reveal" style="--d:{i}"><figure><img src="assets/imgs/escenas/{img}.webp?v={VERSION}" alt="" loading="lazy" /></figure><div><h3>{t}</h3><p>{d}</p></div></li>' for i, (img, t, d) in enumerate(steps))
+    calibres = [(12, '340 – 390'), (14, '261 – 339'), (16, '240 – 260'), (18, '211 – 239'), (20, '197 – 210'), (22, '176 – 196'), (24, '152 – 175'), (26, '145 – 152'), (28, '135 – 144'), (30, '123 – 134'), (32, '100 – 122')]
+    cal_rows = ''.join(f'<tr><th scope="row">{c}</th><td>{g} g</td></tr>' for c, g in calibres)
+    faqs = [
+     (T('¿El envío tiene costo?', 'Is delivery free?'), T('Contamos con transporte propio y el envío es gratis en Bogotá. Para otras ciudades lo confirmamos según la cobertura de tu zona.', 'We run our own fleet and delivery is free in Bogotá. For other cities we confirm it based on coverage in your area.')),
+     (T('¿Cómo se paga el pedido?', 'How do I pay?'), T('Pagas contra entrega, cuando recibes tus productos en la fecha acordada.', 'You pay on delivery, when your products arrive on the agreed date.')),
+     (T('¿Venden al por mayor?', 'Do you sell wholesale?'), T('Sí. Manejamos precios mayoristas para negocios e instituciones. Volúmenes y frecuencia se acuerdan en cada cotización.', 'Yes. We offer wholesale prices to businesses and institutions. Volumes and frequency are agreed in each quote.')),
+     (T('¿A qué tipo de clientes atienden?', 'Who do you supply?'), T('Centrales de abastos, restaurantes, hoteles, casinos, colegios, hospitales, instituciones públicas y fundaciones, entre otros.', 'Wholesale markets, restaurants, hotels, cafeterias, schools, hospitals, public institutions and foundations, among others.')),
+    ]
+    faq_html = ''.join(f'<details{" open" if i == 0 else ""}><summary>{q}</summary><p>{a}</p></details>' for i, (q, a) in enumerate(faqs))
+    body = f"""<main id="contenido">
+{page_hero(T("Distribución", "Distribution"), T("Distribución nacional", "National distribution"),
   f'{T("Todo lo que tu operación", "Everything your operation")} <em>{T("necesita.", "needs.")}</em>',
-  T(f"Aguacate Hass de Sonsón y {TOTAL} referencias de frutas, hortalizas, tubérculos y plátanos seleccionadas desde el cultivo.", f"Hass avocados from Sonsón and {TOTAL} fruits, vegetables, tubers and plantains selected at the farm."),
+  T(f"Desde Corabastos, Bogotá, abastecemos a más de 200 clientes con aguacate Hass de Sonsón y {TOTAL} referencias de frutas, hortalizas, tubérculos y plátanos.", f"From Corabastos, Bogotá, we supply more than 200 clients with Hass avocados from Sonsón and {TOTAL} fruits, vegetables, tubers and plantains."),
   bg_video('mercado'),
-  f'<a class="button button-gold" href="contacto.html">{T("Solicita tu cotización", "Request a quote")} {ARROW}</a><a class="text-link" href="#catalogo">{T("Ver portafolio", "See our portfolio")} {icon("arrow-down")}</a>')}
-    <section class="section editorial-split" id="aguacate">
+  f'<a class="button button-gold" href="contacto.html?tipo=nacional">{T("Solicita tu cotización", "Request a quote")} {ARROW}</a><a class="text-link" href="#catalogo">{T("Ver portafolio", "See our portfolio")} {icon("arrow-down")}</a>')}
+    <section class="section">
+      <div class="section-head">
+        <div><p class="eyebrow reveal">{T("Nuestro portafolio", "Our portfolio")}</p><h2 class="h-section reveal" style="--d:1">{T("Seleccionado desde", "Selected straight")} <em>{T("los cultivos.", "from the farms.")}</em></h2></div>
+        <p class="reveal" style="--d:2">{T("Frutas, hortalizas, tubérculos y plátanos seleccionados desde el cultivo, con calidad, frescura y continuidad en el suministro.", "Fruit, vegetables, tubers and plantains selected at the farm, with consistent quality, freshness and supply.")}</p>
+      </div>
+      <div class="category-grid">{cat_cards}</div>
+    </section>
+    <section class="section editorial-split section-alt" id="aguacate">
       <figure class="editorial-media reveal"><img src="assets/imgs/origen/cosecha-hass.webp" alt="{T("Cosecha de aguacate Hass", "Hass avocado harvest")}" loading="lazy" /><figcaption>{icon("map-pin")}{T("Origen: Sonsón, Antioquia", "Origin: Sonsón, Antioquia")}</figcaption></figure>
-      <div class="editorial-copy">
-        <p class="eyebrow reveal">{T("Nuestro producto insignia", "Our flagship product")}</p>
-        <h2 class="h-section reveal" style="--d:1">{T("Aguacate Hass", "Hass avocado")} <em>{T("de origen colombiano.", "grown in Colombia.")}</em></h2>
-        <p class="reveal" style="--d:2">{T("Nace en Sonsón, Antioquia, y recorre un proceso que comienza mucho antes de llegar al mercado. Cuidamos el cultivo, la selección y la comercialización para responder a los requerimientos de cada cliente.", "Grown in Sonsón, Antioquia, it follows a journey that starts long before the market. We look after growing, selection and sales to meet each client’s requirements.")}</p>
-        <dl class="spec-list reveal" style="--d:3">
-          <div><dt>{T("Origen", "Origin")}</dt><dd>{T("Sonsón, Antioquia · Colombia", "Sonsón, Antioquia · Colombia")}</dd></div>
-          <div><dt>{T("Variedad", "Variety")}</dt><dd>Hass</dd></div>
-          <div><dt>{T("Calibres y presentaciones", "Sizes and packaging")}</dt><dd>{T("Según disponibilidad", "Subject to availability")}</dd></div>
-          <div><dt>{T("Volumen y frecuencia", "Volume and frequency")}</dt><dd>{T("Según cada negociación", "Agreed per order")}</dd></div>
-        </dl>
-        <a class="button button-gold reveal" style="--d:4" href="contacto.html">{T("Consultar disponibilidad", "Ask about availability")} {ARROW}</a>
+      <div class="editorial-copy" id="calibres">
+        <p class="eyebrow reveal">{T("Producto de origen propio", "Grown by us")}</p>
+        <h2 class="h-section reveal" style="--d:1">{T("Aguacate Hass", "Hass avocado")} <em>{T("por calibre.", "by size.")}</em></h2>
+        <p class="reveal" style="--d:2">{T("Producción en Sonsón, Antioquia, clasificada por peso. Disponibilidad y presentaciones se confirman en cada pedido.", "Grown in Sonsón, Antioquia and sorted by weight. Availability and presentation are confirmed with each order.")}</p>
+        <table class="calibre-table reveal" style="--d:3">
+          <caption>{T("Tabla de calibres del productor", "Grower size table")}</caption>
+          <thead><tr><th scope="col">{T("Calibre", "Size")}</th><th scope="col">{T("Peso en gramos", "Weight in grams")}</th></tr></thead>
+          <tbody>{cal_rows}</tbody>
+        </table>
+        <a class="button button-gold reveal" style="--d:4" href="contacto.html?tipo=nacional">{T("Consultar disponibilidad", "Ask about availability")} {ARROW}</a>
       </div>
     </section>
-    <section class="section section-alt" id="catalogo">
-      <div class="section-head"><div><p class="eyebrow reveal">{T("Catálogo nacional", "National catalog")}</p><h2 class="h-section reveal" style="--d:1">{T("Seleccionado desde", "Selected straight")} <em>{T("los cultivos.", "from the farms.")}</em></h2></div>
+    <section class="section" id="catalogo">
+      <div class="section-head"><div><p class="eyebrow reveal">{T("Catálogo nacional", "National catalog")}</p><h2 class="h-section reveal" style="--d:1">{T(f"{TOTAL} referencias", f"{TOTAL} products")} <em>{T("del campo colombiano.", "from Colombian farms.")}</em></h2></div>
       <p class="reveal" style="--d:2">{T("Filtra por categoría y consulta la disponibilidad vigente con nuestro equipo.", "Filter by category and ask our team about current availability.")}</p></div>
       <div class="filter-bar" role="group" aria-label="{T("Filtrar por categoría", "Filter by category")}">{chips}</div>
       <ul class="catalog-grid" data-catalog>{items}</ul>
       <p class="catalog-count" data-catalog-count aria-live="polite"></p>
-    </section>
-    <section class="section">
-      <a class="catalog-download reveal" href="assets/docs/catalogo-nacional-agro-colombia.pdf" target="_blank" rel="noopener">
+      <a class="catalog-download reveal" href="assets/docs/catalogo-nacional-agro-colombia.pdf" target="_blank" rel="noopener" style="margin-top:48px">
         <img src="assets/imgs/catalogo/portada-catalogo.jpg" alt="" loading="lazy" />
         <div><h3>{T("Catálogo nacional en PDF", "National catalog in PDF")}</h3><p>{T("Todo el portafolio con fotografías, listo para compartir con tu equipo de compras.", "The full portfolio with photos, ready to share with your purchasing team.")}</p></div>
         <span class="button button-gold">{T("Descargar", "Download")} {ARROW}</span>
       </a>
     </section>
-{closing(T("Cuéntanos qué buscas", "Tell us what you need"), T("y a dónde debe llegar.", "and where it should go."), T("Confirmamos disponibilidad, calibres, presentaciones y condiciones comerciales para tu pedido.", "We confirm availability, sizes, packaging and commercial terms for your order."), 'aguacate-corte')}  </main>
-'''
-    return (head('Productos | Agro Colombia Company', 'Products | Agro Colombia Company',
-                 f'Aguacate Hass de Sonsón, Antioquia, y {TOTAL} referencias de frutas, hortalizas, tubérculos y plátanos para negocios e instituciones.',
-                 f'Hass avocados from Sonsón, Antioquia, and {TOTAL} fruits, vegetables, tubers and plantains for businesses and institutions.',
+    <section class="section on-dark">
+      <div class="section-head">
+        <div><p class="eyebrow reveal">{T("Por qué trabajar con nosotros", "Why work with us")}</p><h2 class="h-section reveal" style="--d:1">{T("Un servicio pensado para que tu operación", "Service designed so your operation")} <em>{T("no se detenga.", "never stops.")}</em></h2></div>
+        <p class="reveal" style="--d:2">{T("Productos frescos, un servicio eficiente y atención personalizada para responder a cada cliente con compromiso.", "Fresh produce, efficient service and personal attention for every client.")}</p>
+      </div>
+      <div class="value-grid">{value_cards}</div>
+    </section>
+    <section class="section">
+      <div class="section-head">
+        <div><p class="eyebrow reveal">{T("A quiénes abastecemos", "Who we supply")}</p><h2 class="h-section reveal" style="--d:1">{T("Diferentes sectores,", "Different sectors,")} <em>{T("un mismo compromiso.", "one commitment.")}</em></h2></div>
+        <p class="reveal" style="--d:2">{T("Llevamos lo mejor del campo colombiano a cada operación, con un servicio confiable y adaptado a cada cliente.", "We bring the best of Colombian farms to every operation, with reliable service tailored to each client.")}</p>
+      </div>
+      <div class="sector-grid">{sector_cards}</div>
+    </section>
+    <section class="section on-dark steps-section">
+      <div class="section-head">
+        <div><p class="eyebrow reveal">{T("Cómo funciona", "How it works")}</p><h2 class="h-section reveal" style="--d:1">{T("Del pedido a tu operación", "From order to operation")} <em>{T("en tres pasos.", "in three steps.")}</em></h2></div>
+        <p class="reveal" style="--d:2">{T("Un proceso simple, seguro y eficiente para que recibas productos frescos y a tiempo.", "A simple, secure and efficient process so fresh produce arrives on time.")}</p>
+      </div>
+      <ol class="steps">{step_cards}</ol>
+      <div class="section-cta reveal"><a class="text-link" href="contacto.html#proceso">{T("Ver el proceso completo", "See the full process")} {icon("arrow-right")}</a></div>
+    </section>
+    <section class="section section-alt map-section" id="cobertura" aria-labelledby="map-title">
+      <div class="map-intro">
+        <p class="eyebrow reveal">{T("Cobertura nacional", "National coverage")}</p>
+        <h2 class="h-section reveal" id="map-title" style="--d:1">{T("Presencia en Bogotá", "Present in Bogotá")} <em>{T("y a nivel nacional.", "and nationwide.")}</em></h2>
+        <p class="reveal" style="--d:2">{T("Explora los 32 departamentos y Bogotá D. C. Te confirmamos destinos y disponibilidad vigentes para tu zona.", "Explore Colombia’s 32 departments and Bogotá D. C. We confirm current destinations and availability for your area.")}</p>
+        <ul class="map-legend reveal" style="--d:3">
+          <li><span class="legend-dot is-home"></span><span><b>{T("Origen", "Origin")}</b>{T("Sonsón, Antioquia", "Sonsón, Antioquia")}</span></li>
+          <li><span class="legend-dot is-home"></span><span><b>{T("Operación", "Operations")}</b>{T("Corabastos, Bogotá D. C.", "Corabastos, Bogotá D. C.")}</span></li>
+          <li><span class="legend-dot"></span><span><b>{T("Cobertura", "Coverage")}</b>{T("Según destino y disponibilidad", "Depending on destination and availability")}</span></li>
+        </ul>
+      </div>
+      <div class="map-card on-dark reveal" style="--d:1">
+        <div class="map-canvas">
+          <svg class="department-map" viewBox="0 0 640 680" role="group" aria-label="{T("Mapa interactivo de departamentos de Colombia", "Interactive map of Colombian departments")}"><g data-map-geometry>{MAP_PATHS}</g></svg>
+        </div>
+        <div class="map-details">
+          <label for="department-select">{T("Explora el mapa", "Explore the map")}</label>
+          <div class="select-wrap"><select id="department-select" data-map-select><option value="">{T("Selecciona un departamento", "Select a department")}</option>{MAP_OPTIONS}</select></div>
+          <div class="map-selection" aria-live="polite"><span data-map-region>{T("Cobertura nacional", "National coverage")}</span><h3 data-map-name>Colombia</h3><p data-map-copy>{T("Antioquia es nuestro origen y Bogotá nuestra operación comercial. Selecciona un departamento para consultar destinos.", "Antioquia is our origin and Bogotá our commercial hub. Select a department to ask about destinations.")}</p></div>
+          <a class="button button-gold" href="contacto.html?tipo=nacional">{T("Hablar con el equipo", "Talk to our team")} {ARROW}</a>
+          <p class="map-attribution">{T("Límites administrativos:", "Administrative boundaries:")} <a href="https://www.geoboundaries.org/" target="_blank" rel="noopener">geoBoundaries</a>, OpenStreetMap / Wambacher, <a href="https://opendatacommons.org/licenses/odbl/1-0/" target="_blank" rel="noopener">ODbL 1.0</a>.</p>
+        </div>
+      </div>
+    </section>
+    <section class="section faq-section" id="preguntas">
+      <div class="faq-heading">
+        <p class="eyebrow reveal">{T("Preguntas frecuentes", "FAQ")}</p>
+        <h2 class="h-section reveal" style="--d:1">{T("Lo que nos preguntan", "What clients ask")} <em>{T("antes de comprar.", "before ordering.")}</em></h2>
+        <a class="text-link reveal" style="--d:2" href="contacto.html?tipo=nacional">{T("Hacer una pregunta", "Ask a question")} {ARROW}</a>
+      </div>
+      <div class="faq-list reveal" style="--d:1">{faq_html}</div>
+    </section>
+{closing(T("¿Listo para abastecer", "Ready to stock"), T("tu negocio?", "your business?"), T("Cuéntanos qué productos necesitas y a dónde deben llegar. Te respondemos con una cotización a la medida.", "Tell us which products you need and where they should go. We will reply with a tailored quote."), 'aguacate-corte', NATIONAL_PERKS)}  </main>
+"""
+    body = body.replace('href="contacto.html"', 'href="contacto.html?tipo=nacional"')
+    return (head('Distribución nacional | Agro Colombia Company', 'National distribution | Agro Colombia Company',
+                 f'Distribución nacional desde Corabastos, Bogotá: aguacate Hass por calibre y {TOTAL} referencias de frutas, hortalizas, tubérculos y plátanos. Envío gratis en Bogotá y pago contra entrega.',
+                 f'National distribution from Corabastos, Bogotá: Hass avocados by size and {TOTAL} fruits, vegetables, tubers and plantains. Free delivery in Bogotá and cash on delivery.',
                  'servicios.html', 'assets/imgs/escenas/cat-frutas.webp') + header('servicios.html') + body + footer())
 
 # ---------------------------------------------------------------- CONTACTO
@@ -813,17 +977,22 @@ def build_contacto():
         tag = (f'<textarea id="f-{name}" name="{name}"{" required" if required else ""} aria-describedby="e-{name}"{extra}></textarea>' if kind == 'textarea' else
                f'<input id="f-{name}" name="{name}" type="{kind}"{f" autocomplete=\"{auto}\"" if auto else ""}{" required" if required else ""} aria-describedby="e-{name}"{extra} />')
         return f'<div class="field{" field-full" if full else ""}"><label for="f-{name}">{label}{opt}</label>{tag}<span class="field-error" id="e-{name}"></span></div>'
-    form = (field('name', T('Nombre', 'Name'), auto='name', required=True) +
+    kind = (f'<div class="field field-full"><label for="f-type">{T("Tipo de solicitud", "Request type")}</label>'
+            f'<div class="select-wrap"><select id="f-type" name="type" required aria-describedby="e-type">'
+            f'<option value="exportacion">{T("Exportación de aguacate Hass", "Hass avocado export")}</option>'
+            f'<option value="nacional">{T("Distribución nacional", "National distribution")}</option></select></div>'
+            f'<span class="field-error" id="e-type"></span></div>')
+    form = (kind + field('name', T('Nombre', 'Name'), auto='name', required=True) +
             field('company', T('Empresa o negocio', 'Company or business'), auto='organization', optional=True) +
             field('email', T('Correo electrónico', 'Email'), 'email', True, 'email') +
             field('phone', T('Teléfono', 'Phone'), 'tel', False, 'tel', optional=True) +
-            field('city', T('Ciudad de entrega', 'Delivery city'), auto='address-level2', required=True) +
+            field('city', T('País y ciudad de destino', 'Destination country and city'), auto='address-level2', required=True) +
             field('interest', T('Productos de interés', 'Products of interest'), extra=f' placeholder="{T("Aguacate Hass, frutas, hortalizas...", "Hass avocados, fruit, vegetables...")}"') +
-            field('message', T('Volumen, frecuencia y detalles', 'Volume, frequency and details'), 'textarea', True, full=True))
+            field('message', T('Volumen, calibres, frecuencia y detalles', 'Volume, sizes, frequency and details'), 'textarea', True, full=True))
     body = f'''<main id="contenido">
 {page_hero(T("Contacto", "Contact"), T("Hablemos", "Let’s talk"),
-  f'{T("Conectemos tu operación", "Let’s connect your operation")} <em>{T("con el campo.", "with the farm.")}</em>',
-  T("Cuéntanos qué productos necesitas, el volumen y la zona de entrega. Te respondemos con una cotización a la medida.", "Tell us which products you need, the volume and the delivery area. We will reply with a tailored quote."),
+  f'{T("Conectemos el campo colombiano", "Let’s connect Colombian farms")} <em>{T("con nuevos mercados.", "with new markets.")}</em>',
+  T("Cotiza aguacate Hass de exportación o distribución nacional. Cuéntanos tu destino, volumen y calibres y te respondemos con una propuesta a la medida.", "Request a quote for export Hass avocados or national distribution. Tell us your destination, volume and sizes and we will reply with a tailored proposal."),
   '<img src="assets/imgs/escenas/crate-hero.webp" alt="" fetchpriority="high" />')}
     <section class="section contact-layout">
       <div>
@@ -837,6 +1006,7 @@ def build_contacto():
 
           <div class="channel reveal" style="--d:3">{icon("map-pin")}<div><small>{T("Operación comercial", "Commercial operation")}</small><strong>{T("Corabastos, Bogotá D. C.", "Corabastos, Bogotá D. C.")}</strong></div></div>
           <div class="channel reveal" style="--d:4">{icon("plant")}<div><small>{T("Origen", "Origin")}</small><strong>{T("Sonsón, Antioquia", "Sonsón, Antioquia")}</strong></div></div>
+          <div class="channel reveal" style="--d:5">{icon("buildings")}<div><small>{T("Razón social", "Legal name")}</small><strong>{LEGAL_NAME} · NIT {NIT}</strong></div></div>
         </div>
       </div>
       <form class="contact-form on-dark reveal" style="--d:1" data-contact-form novalidate>
@@ -846,15 +1016,15 @@ def build_contacto():
       </form>
     </section>
     <section class="section section-alt" id="proceso">
-      <div class="section-head"><div><p class="eyebrow reveal">{T("Nuestro proceso comercial", "Our sales process")}</p><h2 class="h-section reveal" style="--d:1">{T("Del pedido", "From order")} <em>{T("a tu operación.", "to your operation.")}</em></h2></div>
+      <div class="section-head"><div><p class="eyebrow reveal">{T("Proceso de distribución nacional", "National distribution process")}</p><h2 class="h-section reveal" style="--d:1">{T("Del pedido", "From order")} <em>{T("a tu operación.", "to your operation.")}</em></h2></div>
       <p class="reveal" style="--d:2">{T("Te acompañamos en cada paso, desde el campo hasta tu negocio.", "We are with you at every step, from the farm to your business.")}</p></div>
       <ol class="steps">{step_cards}</ol>
     </section>
   </main>
 '''
     return (head('Contacto | Agro Colombia Company', 'Contact | Agro Colombia Company',
-                 'Solicita tu cotización de aguacate Hass, frutas, hortalizas y tubérculos. Envío gratis en Bogotá y pago contra entrega.',
-                 'Request a quote for Hass avocados, fruit, vegetables and tubers. Free delivery in Bogotá and cash on delivery.',
+                 'Cotiza aguacate Hass colombiano de exportación o distribución nacional de frutas, hortalizas y tubérculos.',
+                 'Request a quote for Colombian export Hass avocados or national distribution of fruit, vegetables and tubers.',
                  'contacto.html', 'assets/imgs/escenas/crate-hero.webp') + header('contacto.html') + body + footer())
 
 # ---------------------------------------------------------------- PRIVACIDAD
@@ -868,8 +1038,8 @@ def build_privacidad():
     <section class="section">
       <div class="legal-content">
         <h2>Política de tratamiento de datos personales</h2>
-        <p>Agro Colombia Company es responsable del tratamiento de los datos personales que nos compartes a través de este sitio, conforme a la Ley 1581 de 2012 y sus decretos reglamentarios.</p>
-        <p>Este sitio no guarda en servidores la información del formulario de contacto. Al enviarlo se abre tu aplicación de correo con el mensaje preparado y solo recibimos los datos que decidas enviarnos: nombre, empresa, correo, teléfono, ciudad y detalles de tu solicitud.</p>
+        <p>{LEGAL_NAME}, identificada con NIT {NIT} y domicilio en Bogotá D. C., Colombia, es responsable del tratamiento de los datos personales que nos compartes a través de este sitio, conforme a la Ley 1581 de 2012 y sus decretos reglamentarios.</p>
+        <p>Este sitio no guarda en servidores la información del formulario de contacto. Al enviarlo se abre WhatsApp o tu aplicación de correo con el mensaje preparado y solo recibimos los datos que decidas enviarnos: nombre, empresa, correo, teléfono, ciudad y detalles de tu solicitud.</p>
         <h2>Finalidad</h2>
         <ul><li>Responder tus consultas y preparar cotizaciones.</li><li>Coordinar pedidos, entregas y pagos.</li><li>Enviarte información comercial cuando lo hayas autorizado.</li></ul>
         <h2>Tus derechos</h2>
@@ -878,7 +1048,7 @@ def build_privacidad():
         <p>Guardamos en tu navegador solo tus preferencias de idioma y tema. El sitio carga tipografías de Google Fonts y mapas de OpenStreetMap, servicios que pueden registrar tu dirección IP según sus propias políticas.</p>
         <h2 id="terminos">Términos de uso</h2>
         <p>La información de productos, disponibilidad, calibres, presentaciones, precios y cobertura es de referencia y se confirma en cada cotización. Las imágenes son ilustrativas.</p>
-        <p>Los contenidos, la marca y el material gráfico de Agro Colombia Company no pueden reproducirse sin autorización. Algunos videos y fotografías provienen de bancos de imágenes de uso libre.</p>
+        <p>Los contenidos, la marca y el material gráfico de Agro Colombia Company no pueden reproducirse sin autorización. Algunos videos y fotografías provienen de bancos de imágenes de uso libre. Los logotipos de Rainforest Alliance, GLOBALG.A.P. e ICA pertenecen a sus respectivas organizaciones y se muestran para identificar las certificaciones y registros de la empresa.</p>
         <p class="legal-updated muted">Última actualización: octubre de 2026.</p>
       </div>
     </section>
