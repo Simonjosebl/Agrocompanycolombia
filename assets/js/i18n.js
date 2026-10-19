@@ -221,7 +221,7 @@ window.ACC_I18N = {
 "Nuestro origen es Colombia. Nuestro horizonte es el mundo.": "Our origin is Colombia. Our horizon is the world.",
 "Cada cosecha representa el trabajo de nuestra tierra. Cada nuevo mercado es una oportunidad para llevar ese esfuerzo más lejos.": "Every harvest carries the work of our land. Every new market is a chance to take that effort further.",
 "Conoce nuestra historia": "Read our story",
-"Montañas de Sonsón, Antioquia, cubiertas de niebla": "Misty mountains of Sonsón, Antioquia",
+"Montañas y cultivos de Sonsón, Antioquia": "Mountains and farmland in Sonsón, Antioquia",
 "Nuestro origen": "Our origin",
 "Todo comienza": "It all begins",
 "en nuestra tierra.": "in our land.",

@@ -492,7 +492,7 @@ p, li, dd { text-wrap: pretty; }
 @media (hover: hover) and (pointer: fine) { .values-row li:hover { border-color: var(--gold); background: rgba(215, 173, 67, .1); } }
 
 .route-band { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: var(--sp-400); padding: var(--sp-600); border: 1px solid var(--line); border-radius: var(--r-3xl); }
-.route-band b { display: block; margin-bottom: var(--sp-50); color: var(--gold); font-size: var(--text-xs); line-height: var(--lh-xs); letter-spacing: .12em; text-transform: uppercase; }
+.route-band b { display: block; margin-bottom: var(--sp-50); color: var(--accent); font-size: var(--text-xs); line-height: var(--lh-xs); letter-spacing: .12em; text-transform: uppercase; }
 .route-band strong { font: 500 var(--text-3xl)/var(--lh-3xl) var(--font-display); }
 .route-band p { margin-top: var(--sp-50); color: var(--muted); font-size: var(--text-sm); line-height: var(--lh-sm); }
 .route-line { position: relative; width: clamp(64px, 14vw, 200px); height: 2px; background: repeating-linear-gradient(90deg, var(--gold) 0 8px, transparent 8px 16px); background-size: 16px 2px; animation: route 900ms linear infinite; }
@@ -754,7 +754,7 @@ a.channel:hover > .icon:last-child { color: var(--accent); transform: translate(
 html.lightbox-open { overflow: hidden; }
 
 /* WhatsApp */
-.whatsapp-float { position: fixed; z-index: 45; right: var(--sp-300); bottom: max(var(--sp-300), env(safe-area-inset-bottom)); display: inline-flex; align-items: center; height: 56px; padding: 4px; border-radius: var(--r-full); color: #fff; background: #1f9e57; box-shadow: 0 10px 28px rgba(0, 0, 0, .3); transition: transform 300ms var(--ease-out), background-color 240ms var(--ease-out), box-shadow 300ms var(--ease-out); animation: wa-in 800ms 1200ms var(--ease-out) both; }
+.whatsapp-float { position: fixed; z-index: 45; right: var(--sp-300); bottom: max(var(--sp-300), env(safe-area-inset-bottom)); display: inline-flex; align-items: center; height: 56px; padding: 4px; border-radius: var(--r-full); color: #fff; background: #15803d; box-shadow: 0 10px 28px rgba(0, 0, 0, .3); transition: transform 300ms var(--ease-out), background-color 240ms var(--ease-out), box-shadow 300ms var(--ease-out); animation: wa-in 800ms 1200ms var(--ease-out) both; }
 @keyframes wa-in { from { opacity: 0; transform: translateY(var(--sp-400)) scale(.9); } }
 .whatsapp-float-icon { position: relative; display: grid; place-items: center; width: var(--sp-600); height: var(--sp-600); border-radius: var(--r-full); font-size: 26px; }
 .whatsapp-float-icon::after { content: ''; position: absolute; inset: -4px; border-radius: inherit; animation: wa-ping 2600ms var(--ease-in-out) infinite; }
@@ -764,13 +764,13 @@ html.lightbox-open { overflow: hidden; }
 .whatsapp-float:active { transform: scale(.94); }
 .whatsapp-float:focus-visible .whatsapp-float-text { max-width: 220px; padding: 0 var(--sp-200) 0 var(--sp-50); opacity: 1; }
 .to-top { right: calc(var(--sp-300) + 4px); bottom: calc(max(var(--sp-300), env(safe-area-inset-bottom)) + 68px); }
-.button-whatsapp { color: #fff; background: #1f9e57; box-shadow: 0 8px 24px rgba(31, 158, 87, .28); }
-.channel.is-whatsapp > .icon:first-child { color: #fff; background-color: #1f9e57; }
+.button-whatsapp { color: #fff; background: #15803d; box-shadow: 0 8px 24px rgba(21, 128, 61, .3); }
+.channel.is-whatsapp > .icon:first-child { color: #fff; background-color: #15803d; }
 .form-actions { display: flex; flex-wrap: wrap; gap: var(--sp-100); }
 @media (hover: hover) and (pointer: fine) {
-  .whatsapp-float:hover { background: #17864a; transform: translateY(-2px); box-shadow: 0 16px 36px rgba(0, 0, 0, .35); }
+  .whatsapp-float:hover { background: #116632; transform: translateY(-2px); box-shadow: 0 16px 36px rgba(0, 0, 0, .35); }
   .whatsapp-float:hover .whatsapp-float-text { max-width: 220px; padding: 0 var(--sp-200) 0 var(--sp-50); opacity: 1; }
-  .button-whatsapp:hover { background: #17864a; transform: translateY(-2px); }
+  .button-whatsapp:hover { background: #116632; transform: translateY(-2px); }
 }
 
 @media (max-width: 1099px) {
@@ -866,7 +866,25 @@ html.lightbox-open { overflow: hidden; }
 .spec-card .value-icon { display: grid; place-items: center; flex: none; width: var(--sp-600); height: var(--sp-600); border-radius: var(--r-full); color: var(--forest-deep); background: var(--gold); font-size: var(--text-xl); }
 .spec-card small { display: block; margin-bottom: var(--sp-50); color: var(--accent); font-size: var(--text-xs); line-height: var(--lh-xs); font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
 .spec-card strong { display: block; font-size: var(--text-sm); line-height: var(--lh-sm); font-weight: 600; }
-@media (hover: hover) and (pointer: fine) { .spec-card:hover { border-color: var(--gold); transform: translateY(-3px); } }
+/* Tarjetas de ficha técnica: verde en tema claro, crema en tema oscuro */
+.spec-card { position: relative; overflow: hidden; isolation: isolate; color: var(--cream); border-color: rgba(215, 173, 67, .22); background: var(--forest); box-shadow: 0 16px 32px rgba(1, 29, 7, .14); transition: border-color 300ms var(--ease-out), transform 500ms var(--ease-out), box-shadow 500ms var(--ease-out); }
+.spec-card small { color: var(--gold); }
+.spec-card strong { color: var(--cream); }
+.spec-card::before { content: ''; position: absolute; inset: 0 0 auto; height: 3px; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform 600ms var(--ease-out); }
+.spec-card::after { content: ''; position: absolute; z-index: -1; right: -40%; bottom: -60%; width: 80%; aspect-ratio: 1; border-radius: var(--r-full); background: rgba(215, 173, 67, .14); filter: blur(24px); opacity: 0; transition: opacity 500ms var(--ease-out), transform 700ms var(--ease-out); }
+.spec-card .value-icon { transition: transform 500ms var(--ease-out), background-color 300ms var(--ease-out); }
+[data-theme="dark"] .spec-card { color: var(--forest-deep); border-color: transparent; background: var(--bone); box-shadow: 0 16px 32px rgba(0, 0, 0, .3); }
+[data-theme="dark"] .spec-card small { color: #7d5f12; }
+[data-theme="dark"] .spec-card strong { color: var(--forest-deep); }
+[data-theme="dark"] .spec-card .value-icon { color: var(--gold); background: var(--forest); }
+[data-theme="dark"] .spec-card::after { background: rgba(1, 29, 7, .1); }
+@media (hover: hover) and (pointer: fine) {
+  .spec-card:hover { border-color: var(--gold); transform: translateY(-6px); box-shadow: 0 28px 48px rgba(1, 29, 7, .28); }
+  .spec-card:hover::before { transform: scaleX(1); }
+  .spec-card:hover::after { opacity: 1; transform: translate(-20%, -20%); }
+  .spec-card:hover .value-icon { transform: rotate(-12deg) scale(1.08); }
+}
+.spec-card:active { transform: scale(.98); }
 
 /* Certificaciones */
 .cert-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-300); }
@@ -974,3 +992,8 @@ html.lightbox-open { overflow: hidden; }
   .pull-quote { font-size: var(--text-xl); line-height: var(--lh-xl); }
 }
 @media (prefers-reduced-motion: reduce) { .hero-scroll + .brand-pillars { margin-top: 0; } }
+
+/* Legibilidad de textos sobre fotografía */
+.category-card h3, .category-card p, .category-card .card-link, .sector-card span, .video-meta, .hero-intro, .page-hero .lead, .closing-copy > p { text-shadow: 0 1px 14px rgba(0, 0, 0, .55); }
+.category-card img { opacity: .4; }
+.sector-card::after { background: rgba(0, 14, 3, .46); }

@@ -603,7 +603,7 @@ def build_index():
     </section>
 
     <section class="section editorial-split" id="origen">
-      <figure class="editorial-media reveal"><img src="{X}/valle-niebla.webp" alt="{T("Montañas de Sonsón, Antioquia, cubiertas de niebla", "Misty mountains of Sonsón, Antioquia")}" loading="lazy" /><figcaption>{icon("map-pin")}{T("Sonsón, Antioquia", "Sonsón, Antioquia")}</figcaption></figure>
+      <figure class="editorial-media reveal"><img src="{X}/origen-sonson.webp" style="object-position: 18% 50%" alt="{T("Montañas y cultivos de Sonsón, Antioquia", "Mountains and farmland in Sonsón, Antioquia")}" loading="lazy" /><figcaption>{icon("map-pin")}{T("Sonsón, Antioquia", "Sonsón, Antioquia")}</figcaption></figure>
       <div class="editorial-copy">
         <p class="eyebrow reveal">{T("Nuestro origen", "Our origin")}</p>
         <h2 class="h-section reveal" style="--d:1">{T("Todo comienza", "It all begins")} <em>{T("en nuestra tierra.", "in our land.")}</em></h2>
