@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Club ACC | Agro Colombia Company</title>
+  <meta name="description" content="Bienvenido a la comunidad Club ACC de Agro Colombia Company: pedidos por WhatsApp, cajas de aguacate Hass, recetas y tips." />
+  <!-- Página de destino del código QR: no se enlaza desde el sitio ni se indexa. -->
+  <meta name="robots" content="noindex, follow" />
+  <meta name="theme-color" content="#011d07" />
+  <link rel="icon" type="image/png" href="/assets/imgs/brand/favicon-agrocolombia.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/css/icons.css" />
+  <style>
+    :root {
+      --forest: #011d07;
+      --forest-deep: #000e03;
+      --gold: #d7ad43;
+      --gold-hover: #f1d47e;
+      --cream: #f4eedb;
+      --card: #f6f1e3;
+      --ink: #142719;
+      --muted: rgba(20, 39, 25, .72);
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-sans: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      min-height: 100svh;
+      background: var(--forest);
+      color: var(--cream);
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Fondo: aguacate partido al pie, follaje oscurecido arriba */
+    .backdrop {
+      position: fixed; inset: 0; z-index: -1;
+      background:
+        linear-gradient(180deg, rgba(1, 29, 7, .94) 0%, rgba(1, 29, 7, .86) 45%, rgba(1, 29, 7, .35) 78%, rgba(1, 29, 7, .55) 100%),
+        url('/assets/imgs/club/fondo.webp') center bottom / cover no-repeat,
+        var(--forest);
+    }
+
+    .club {
+      width: 100%; max-width: 480px; min-height: 100svh;
+      margin: 0 auto;
+      padding: max(32px, env(safe-area-inset-top)) 16px 0;
+      display: flex; flex-direction: column;
+    }
+
+    .club-head { text-align: center; }
+    .club-logo { display: block; width: min(240px, 62vw); height: auto; margin: 0 auto; }
+    .club-tagline {
+      margin: 12px 0 0;
+      font-family: var(--font-display); font-style: italic; font-weight: 500;
+      font-size: 24px; line-height: 32px; color: var(--gold);
+    }
+    .club-welcome { margin: 12px 0 0; font-family: var(--font-display); font-weight: 500; font-size: 24px; line-height: 30px; }
+    .club-title {
+      margin: 0;
+      font-family: var(--font-display); font-weight: 600;
+      font-size: 44px; line-height: 52px; letter-spacing: .08em;
+      color: var(--gold);
+    }
+
+    .club-links { list-style: none; margin: 28px 0 0; padding: 0; display: grid; gap: 12px; }
+    .club-link {
+      display: flex; align-items: center; gap: 16px;
+      width: 100%; min-height: 84px; padding: 14px 16px;
+      border: 1px solid rgba(215, 173, 67, .55); border-radius: 16px;
+      background: var(--card); color: var(--ink);
+      font: inherit; text-align: left; text-decoration: none; cursor: pointer;
+      box-shadow: 0 10px 24px rgba(0, 14, 3, .35);
+      transition: transform 160ms var(--ease-out), box-shadow 160ms var(--ease-out);
+    }
+    .club-link:active { transform: scale(.98); }
+    @media (hover: hover) {
+      .club-link:hover { box-shadow: 0 14px 32px rgba(0, 14, 3, .45), 0 0 0 1px var(--gold); }
+    }
+    .club-link:focus-visible { outline: 2px solid var(--gold-hover); outline-offset: 3px; }
+
+    .club-link-icon {
+      flex: none; display: grid; place-items: center;
+      width: 52px; height: 52px; border-radius: 50%;
+      background: var(--forest); color: var(--cream); font-size: 26px;
+    }
+    .club-link-icon svg { width: 26px; height: 26px; }
+    .club-link-text { flex: 1; min-width: 0; }
+    .club-link-text b { display: block; font-family: var(--font-display); font-weight: 600; font-size: 24px; line-height: 28px; }
+    .club-link-text span { display: block; margin-top: 2px; font-size: 14px; line-height: 20px; color: var(--muted); }
+    .club-link-caret { flex: none; width: 20px; height: 20px; color: var(--forest); }
+
+    .club-foot {
+      position: relative;
+      width: 100vw;
+      margin: 48px 0 0 calc(50% - 50vw);
+      padding: 72px 16px max(32px, env(safe-area-inset-bottom));
+      text-align: center;
+    }
+    .club-wave { position: absolute; inset: 0 0 auto; width: 100%; height: 100%; }
+    .club-foot p {
+      position: relative; margin: 0;
+      font-family: var(--font-display); font-weight: 500;
+      font-size: 18px; line-height: 26px; letter-spacing: .22em; text-transform: uppercase;
+      color: var(--gold);
+    }
+    .club-foot small { position: relative; display: block; margin-top: 16px; font-size: 12px; line-height: 16px; color: rgba(244, 238, 219, .6); }
+    .club-ornament { position: relative; display: block; width: 160px; height: 10px; margin: 16px auto 0; }
+
+    /* Hoja de recetas y tips */
+    .tips {
+      width: 100%; max-width: 480px; max-height: 88svh;
+      margin: auto auto 0; padding: 0;
+      border: 0; border-radius: 24px 24px 0 0;
+      background: var(--card); color: var(--ink);
+    }
+    .tips::backdrop { background: rgba(0, 14, 3, .6); }
+    .tips[open] { animation: sheet-in 300ms var(--ease-out); }
+    @keyframes sheet-in { from { transform: translateY(100%); } }
+    .tips-inner { padding: 24px 20px max(32px, env(safe-area-inset-bottom)); }
+    .tips-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .tips h2 { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 30px; line-height: 36px; }
+    .tips h3 { margin: 24px 0 8px; font-family: var(--font-display); font-weight: 600; font-size: 22px; line-height: 28px; color: var(--forest); }
+    .tips p, .tips li { font-size: 15px; line-height: 24px; color: var(--muted); }
+    .tips p { margin: 0; }
+    .tips ul, .tips ol { margin: 0; padding-left: 20px; }
+    .tips li + li { margin-top: 6px; }
+    .tips-close {
+      flex: none; display: grid; place-items: center;
+      width: 44px; height: 44px; border: 0; border-radius: 50%;
+      background: var(--forest); color: var(--cream); font-size: 20px; cursor: pointer;
+    }
+    .tips-cta { display: inline-flex; align-items: center; gap: 8px; margin-top: 24px; color: var(--forest); font-weight: 600; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .club-link, .tips[open] { transition: none; animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="backdrop" aria-hidden="true"></div>
+
+  <main class="club">
+    <header class="club-head">
+      <img class="club-logo" src="/assets/imgs/club/logo.webp" alt="Agro Colombia Company" width="640" height="520" />
+      <p class="club-tagline">Cultivando oportunidades</p>
+      <p class="club-welcome">Bienvenido a nuestra comunidad</p>
+      <h1 class="club-title">CLUB ACC</h1>
+    </header>
+
+    <ul class="club-links">
+      <li>
+        <a class="club-link" href="https://wa.me/573116845523?text=Hola%2C%20vengo%20del%20Club%20ACC%20y%20quiero%20hacer%20un%20pedido." target="_blank" rel="noopener">
+          <span class="club-link-icon"><i class="icon icon-whatsapp-logo" aria-hidden="true"></i></span>
+          <span class="club-link-text"><b>WhatsApp</b><span>Haz tu pedido o escríbenos</span></span>
+          <svg class="club-link-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7" /></svg>
+        </a>
+      </li>
+      <li>
+        <a class="club-link" href="https://www.instagram.com/agrocolombiacompany/" target="_blank" rel="noopener">
+          <span class="club-link-icon"><i class="icon icon-instagram-logo" aria-hidden="true"></i></span>
+          <span class="club-link-text"><b>Instagram</b><span>Conoce nuestra comunidad</span></span>
+          <svg class="club-link-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7" /></svg>
+        </a>
+      </li>
+      <li>
+        <a class="club-link" href="/">
+          <span class="club-link-icon"><i class="icon icon-globe-simple" aria-hidden="true"></i></span>
+          <span class="club-link-text"><b>Página web</b><span>Conoce Agro Colombia Company</span></span>
+          <svg class="club-link-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7" /></svg>
+        </a>
+      </li>
+      <li>
+        <a class="club-link" href="https://wa.me/573116845523?text=Hola%2C%20quiero%20conocer%20las%20cajas%20de%20aguacate%20del%20Club%20ACC." target="_blank" rel="noopener">
+          <span class="club-link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6L5 8Z" /><path d="M9 10V7a3 3 0 0 1 6 0v3" /></svg></span>
+          <span class="club-link-text"><b>CLUB ACC</b><span>Descubre nuestras cajas de aguacate</span></span>
+          <svg class="club-link-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7" /></svg>
+        </a>
+      </li>
+      <li>
+        <button class="club-link" type="button" data-open-tips aria-haspopup="dialog">
+          <span class="club-link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7c-2-1.5-5-2-8-2v13c3 0 6 .5 8 2 2-1.5 5-2 8-2V5c-3 0-6 .5-8 2Z" /><path d="M12 7v13" /><path d="M7 9.5h2.5M7 12.5h2.5M14.5 9.5H17M14.5 12.5H17" /></svg></span>
+          <span class="club-link-text"><b>Recetas y tips</b><span>Disfruta al máximo tus aguacates</span></span>
+          <svg class="club-link-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7" /></svg>
+        </button>
+      </li>
+    </ul>
+
+    <footer class="club-foot">
+      <svg class="club-wave" viewBox="0 0 480 220" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0 70 C 120 10, 260 120, 480 30 V220 H0 Z" fill="#011d07" />
+        <path d="M0 70 C 120 10, 260 120, 480 30" fill="none" stroke="#d7ad43" stroke-width="2" vector-effect="non-scaling-stroke" />
+      </svg>
+      <p>Gracias por ser parte<br />de esta comunidad</p>
+      <svg class="club-ornament" viewBox="0 0 160 10" aria-hidden="true">
+        <path d="M0 5h70M90 5h70" stroke="#d7ad43" stroke-width="1" />
+        <path d="M80 0l5 5-5 5-5-5z" fill="#d7ad43" />
+      </svg>
+      <small>Agro Colombia Company S.A.S. · NIT 901.910.572-4 · Bogotá</small>
+    </footer>
+  </main>
+
+  <dialog class="tips" aria-labelledby="tips-title">
+    <div class="tips-inner">
+      <div class="tips-head">
+        <h2 id="tips-title">Recetas y tips</h2>
+        <button class="tips-close" type="button" data-close-tips aria-label="Cerrar"><i class="icon icon-x" aria-hidden="true"></i></button>
+      </div>
+
+      <h3>¿Cómo saber si está listo?</h3>
+      <ul>
+        <li>La cáscara del Hass pasa de verde a morado oscuro, casi negro, al madurar.</li>
+        <li>Presiónalo suavemente con la palma: si cede un poco, está listo para comer.</li>
+        <li>Retira el pedúnculo: si debajo se ve verde, está en su punto.</li>
+      </ul>
+
+      <h3>Maduración y conservación</h3>
+      <ul>
+        <li>Déjalo madurar a temperatura ambiente, fuera del refrigerador.</li>
+        <li>Para acelerar, guárdalo en una bolsa de papel junto a un banano o una manzana.</li>
+        <li>Una vez maduro, refrigéralo y consúmelo en los siguientes días.</li>
+        <li>Si te sobra una mitad, déjale la semilla, úntale limón y cúbrela con film.</li>
+      </ul>
+
+      <h3>Guacamole clásico</h3>
+      <ol>
+        <li>Machaca 2 aguacates Hass maduros con un tenedor.</li>
+        <li>Agrega cebolla roja y cilantro picados, tomate en cubos y el jugo de un limón.</li>
+        <li>Sazona con sal al gusto y sirve de inmediato.</li>
+      </ol>
+
+      <h3>Tostada de aguacate</h3>
+      <p>Tuesta una tajada de pan, cúbrela con aguacate en láminas o machacado, y termina con sal, pimienta, unas gotas de limón y, si quieres, un huevo encima.</p>
+
+      <a class="tips-cta" href="https://www.instagram.com/agrocolombiacompany/" target="_blank" rel="noopener">Más ideas en Instagram <i class="icon icon-arrow-up-right" aria-hidden="true"></i></a>
+    </div>
+  </dialog>
+
+  <script>
+    const tips = document.querySelector('.tips');
+    document.querySelector('[data-open-tips]').addEventListener('click', () => tips.showModal());
+    document.querySelector('[data-close-tips]').addEventListener('click', () => tips.close());
+    tips.addEventListener('click', (e) => { if (e.target === tips) tips.close(); });
+  </script>
+</body>
+</html>
